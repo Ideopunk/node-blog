@@ -7,68 +7,31 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var sassMiddleware = require("node-sass-middleware");
 const session = require("express-session");
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+require("./passport");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const { body, validationResult } = require("express-validator");
 
+const index = require("./routes/index");
+const user = require("./routes/user");
+const auth = require("./routes/auth");
+
+const passport = require("passport");
+
+var app = express();
+
 //datebase
-const User = require("./models/user");
-const Post = require("./models/post");
-const Comment = require("./models/comment");
+const User = require("./models/User");
+const Post = require("./models/Post");
+const Comment = require("./models/Comment");
 
 mongoose.connect(process.env.MONGURL, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-const User = require("./models/User");
-
-var app = express();
-
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "hbs");
-
-// security
-app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
-
-passport.use(
-	new LocalStrategy((username, password, done) => {
-		User.findOne({ username: username }),
-			(err, user) => {
-				if (err) {
-					return done(err);
-				}
-				if (!user) {
-					return done(null, false, { msg: "Incorrect userrname" });
-				}
-
-				bcrypt.compare(password, user.password, (err, res) => {
-					if (res) {
-						return done(null, user);
-					} else {
-						return done(null, false, { msg: "Incorrect password" });
-					}
-				});
-			};
-	})
-);
-
-passport.serializeUser(function (user, done) {
-	done(null, user.id);
-});
-
-passport.deserializeUser(function (id, done) {
-	User.findById(id, function (err, user) {
-		done(err, user);
-	});
-});
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -92,8 +55,13 @@ app.use(
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.listen(3000, () => console.log("app listening on port 3000"));
-app.use("/", indexRouter);
+// security
+app.use("/", index);
+app.use("/user", passport.authenticate("jwt", { session: false }), user);
+app.use("/auth", auth);
+
+app.listen(8080, () => console.log("app listening on port 8080"));
+app.use("/", index);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
