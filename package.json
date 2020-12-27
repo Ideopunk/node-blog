@@ -1,0 +1,17 @@
+{
+	"name": "blog",
+	"version": "1.0.0",
+	"description": "",
+	"main": "./back/app.js",
+	"scripts": {
+		"test": "test",
+		"writer": "cd writer && npm start",
+		"back": "cd back && nodemon app.js",
+		"dev": "concurrently \"npm run writer\" \"npm run back\""
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"concurrently": "^5.3.0"
+	}
+}
