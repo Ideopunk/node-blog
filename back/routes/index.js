@@ -7,14 +7,14 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 /* GET users listing. */
-router.get("/", function (req, res, next) {
+router.get("/", function (req, res) {
 	res.send("respond with a resource");
 });
 
 /* GET user profile. Protected route */
 router.get("/profile", passport.authenticate("jwt", { session: false }), (req, res) => {
 	console.log("send profile");
-	res.send(req.user);
+	res.send("protected route accessed!");
 });
 
 /* POST login. */
@@ -39,7 +39,7 @@ router.post("/login", function (req, res) {
 				res.send(err);
 			}
 			// generate a signed json web token with the contents of user object and return it in the response
-			const token = jwt.sign(user.toJSON(), "your_jwt_secret");
+			const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET, { expiresIn: "1d" });
 			console.log(user);
 			console.log(token);
 			return res.json({ token });

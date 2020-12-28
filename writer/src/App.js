@@ -1,10 +1,7 @@
 import "./App.scss";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const token = localStorage.getItem("myToken");
-console.log(token);
 axios.defaults.baseURL = "http://localhost:8080";
-axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 const App = () => {
 	const [text, setText] = useState("");
@@ -12,10 +9,14 @@ const App = () => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+
 	const [confirm, setConfirm] = useState("");
 
 	const [loginEmail, setLoginEmail] = useState("");
 	const [loginPassword, setLoginPassword] = useState("");
+
+	const [token, setToken] = useState(localStorage.getItem("myToken"));
+	axios.defaults.headers.common = { "Authorization": `Bearer ${token}` };
 
 	useEffect(() => {
 		axios.get("/").then((response) => setText(response.data));
@@ -23,15 +24,16 @@ const App = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log(token);
+		console.log(token)
 		axios
 			.get("/profile")
 			.then((response) => {
 				console.log("profile");
 				console.log(response);
+				setText(response.data)
 			})
 			.catch((err) => console.log(err));
-	}, []);
+	}, [token]);
 
 	const handleName = (e) => {
 		setName(e.target.value);
@@ -71,7 +73,6 @@ const App = () => {
 	};
 
 	const handleLogin = (e) => {
-		console.log(loginEmail, loginPassword);
 		e.preventDefault();
 		axios
 			.post("/login", {
@@ -81,6 +82,7 @@ const App = () => {
 			.then((response) => {
 				console.log(response);
 				localStorage.setItem("myToken", response.data.token);
+				setToken(response.data.token);
 			})
 			.catch((err) => console.log(err));
 	};
