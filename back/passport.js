@@ -1,6 +1,8 @@
 require("dotenv").config();
+const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const passportJWT = require("passport-jwt");
+const User = require("./models/User");
 
 const ExtractJWT = passportJWT.ExtractJwt;
 
@@ -9,23 +11,27 @@ const JWTStrategy = passportJWT.Strategy;
 
 passport.use(
 	new LocalStrategy((username, password, done) => {
-		User.findOne({ username: username }),
-			(err, user) => {
-				if (err) {
-					return done(err);
-				}
-				if (!user) {
-					return done(null, false, { msg: "Incorrect userrname" });
-				}
+		console.log("local strategy section");
+		User.findOne({ username: username }, (err, user) => {
+			if (err) {
+				console.log("err");
+				console.log(err);
+				return done(err);
+			}
+			if (!user) {
+				console.log("incorrect username");
+				return done(null, false, { msg: "Incorrect userrname" });
+			}
 
-				bcrypt.compare(password, user.password, (err, res) => {
-					if (res) {
-						return done(null, user);
-					} else {
-						return done(null, false, { msg: "Incorrect password" });
-					}
-				});
-			};
+			bcrypt.compare(password, user.password, (err, res) => {
+				console.log("bcrpt compare");
+				if (res) {
+					return done(null, user);
+				} else {
+					return done(null, false, { msg: "Incorrect password" });
+				}
+			});
+		});
 	})
 );
 
@@ -36,8 +42,9 @@ passport.use(
 			secretOrKey: process.env.JWT_SECRET,
 		},
 		function (jwtPayload, cb) {
+			console.log("jwt payload");
 			//find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
-			return UserModel.findOneById(jwtPayload.id)
+			return User.findOneById(jwtPayload.id)
 				.then((user) => {
 					return cb(null, user);
 				})

@@ -15,9 +15,9 @@ const { body, validationResult } = require("express-validator");
 
 const index = require("./routes/index");
 const user = require("./routes/user");
-const auth = require("./routes/auth");
 
 const passport = require("passport");
+require("./passport");
 
 var app = express();
 
@@ -44,12 +44,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // security
+app.listen(8080, () => console.log("app listening on port 8080"));
+
 app.use("/", index);
 app.use("/user", passport.authenticate("jwt", { session: false }), user);
-app.use("/auth", auth);
-
-app.listen(8080, () => console.log("app listening on port 8080"));
-app.use("/", index);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
