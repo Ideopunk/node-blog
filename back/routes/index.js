@@ -5,6 +5,9 @@ const passport = require("passport");
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Post = require("../models/Post");
+const createDOMPurify = require("dompurify");
+const { JSDOM } = require("jsdom");
 
 /* GET users listing. */
 router.get("/", function (req, res) {
@@ -13,8 +16,7 @@ router.get("/", function (req, res) {
 
 /* GET user profile. Protected route */
 router.get("/profile", passport.authenticate("jwt", { session: false }), (req, res) => {
-	console.log("send profile");
-	res.send("protected route accessed!");
+	res.send(req.user.name);
 });
 
 /* POST login. */
@@ -47,6 +49,7 @@ router.post("/login", function (req, res) {
 	})(req, res);
 });
 
+// POST signup
 router.post(
 	"/sign-up",
 	[
@@ -82,50 +85,92 @@ router.post(
 	}
 );
 
-// POSTS
+// BLOG POSTS
 
 // GET all posts
 router.get("/posts", function (req, res) {
 	res.send("posts");
-})
+});
 
 // GET individual post
 router.get("/posts/:postId", function (req, res) {
 	res.send("individual post");
-})
+});
 
 // GET form to create new post.
 // POST form to create new post.
-router.post("/posts")
+router.post("/posts", passport.authenticate("jwt", { session: false }), (req, res) => [
+	body("title", "Posts require titles").trim().isLength({ min: 1 }).escape(),
+	body("published", "Publication status must be specified").isBoolean(),
+	(req, res, next) => {
+		const errors = validationResult(req);
 
-// GET edit form for a post. 
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
+
+		// dompurify stuff...
+		const window = new JSDOM("").window;
+		const DOMPurify = createDOMPurify(window);
+
+		const clean = DOMPurify.sanitize(req.body.content);
+
+		const post = new Post({
+			title: req.body.title,
+			text: clean,
+			user: req.user._id,
+			published: req.body.published,
+		});
+
+		post.save((err) => {
+			if (err) {
+				return next(err);
+			}
+			res.redirect("/");
+		});
+	},
+]);
+
+// GET edit form for a post.
 // UPDATE post.
-router.put('/posts/:postID')
+router.put("/posts/:postID", passport.authenticate("jwt", { session: false }), (req, res) => {});
 
 // DESTROY post.
-router.delete('/posts/:postId')
+router.delete("/posts/:postId", passport.authenticate("jwt", { session: false }), (req, res) => {});
 
 // COMMENTS
 
 // GET all comments for post
 router.get("/posts/:postId/comments", function (req, res) {
 	res.send("comments for post");
-})
+});
 
 // GET individual comment
 router.get("/posts/:postId/comments/:commentId", function (req, res) {
 	res.send("individual comment");
-})
+});
 
 // GET form to create new comment.
-// POST form to create new post. 
+// POST form to create new comment.
+router.post(
+	"/posts/:postID/comments",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {}
+);
 
 // GET edit form for a comment.
-// UPDATE comment. 
+// UPDATE comment.
+router.put(
+	"/posts/:postID/comments/:commentId",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {}
+);
 
 // DESTROY comment.
-
-
-
+router.delete(
+	"/posts/:postId/comments/:commentId",
+	passport.authenticate("jwt", { session: false }),
+	(req, res) => {}
+);
 
 module.exports = router;

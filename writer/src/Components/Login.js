@@ -4,9 +4,8 @@ axios.defaults.baseURL = "http://localhost:8080";
 
 const Login = ({ token, setToken }) => {
 	const [loginEmail, setLoginEmail] = useState("");
-	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
-
 	const [loginPassword, setLoginPassword] = useState("");
+	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	const handleLoginEmail = (e) => {
 		setLoginEmail(e.target.value);
