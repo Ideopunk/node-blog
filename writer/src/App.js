@@ -9,14 +9,13 @@ axios.defaults.baseURL = "http://localhost:8080";
 const App = () => {
 	const [text, setText] = useState("");
 	const [name, setName] = useState("");
-
+	const [id, setID] = useState("");
 	const [token, setToken] = useState(localStorage.getItem("myToken"));
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	// trivial
 	useEffect(() => {
 		axios.get("/").then((response) => setText(response.data));
-		// axios.get
 	}, []);
 
 	// protected
@@ -27,14 +26,15 @@ const App = () => {
 			.then((response) => {
 				console.log("profile");
 				console.log(response);
-				setName(response.data);
+				setName(response.data.name);
+				setID(response.data.id);
 			})
 			.catch((err) => console.log(err));
 	}, [token]);
 
 	return (
 		<div className="App">
-			<p>Yo</p>
+			<p>{name ? `Hi ${name}!` : "Hi there!"}</p>
 			<p>{text}</p>
 
 			{!name && (
@@ -44,7 +44,7 @@ const App = () => {
 					<Login token={token} setToken={setToken} />
 				</>
 			)}
-			<MCE name={name}/>
+			<MCE name={name} id={id} token={token} />
 		</div>
 	);
 };

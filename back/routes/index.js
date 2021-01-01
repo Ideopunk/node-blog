@@ -16,7 +16,7 @@ router.get("/", function (req, res) {
 
 /* GET user profile. Protected route */
 router.get("/profile", passport.authenticate("jwt", { session: false }), (req, res) => {
-	res.send(req.user.name);
+	res.json({ name: req.user.name, id: req.user._id });
 });
 
 /* POST login. */
@@ -99,7 +99,7 @@ router.get("/posts/:postId", function (req, res) {
 
 // GET form to create new post.
 // POST form to create new post.
-router.post("/posts", passport.authenticate("jwt", { session: false }), (req, res) => [
+router.post("/posts", passport.authenticate("jwt", { session: false }), [
 	body("title", "Posts require titles").trim().isLength({ min: 1 }).escape(),
 	body("published", "Publication status must be specified").isBoolean(),
 	(req, res, next) => {
@@ -122,6 +122,7 @@ router.post("/posts", passport.authenticate("jwt", { session: false }), (req, re
 			published: req.body.published,
 		});
 
+		console.log(post);
 		post.save((err) => {
 			if (err) {
 				return next(err);
