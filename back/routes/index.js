@@ -8,7 +8,7 @@ const User = require("../models/User");
 
 /* GET users listing. */
 router.get("/", function (req, res) {
-	res.send("respond with a resource");
+	res.send("index");
 });
 
 /* GET user profile. Protected route */
@@ -81,5 +81,51 @@ router.post(
 		});
 	}
 );
+
+// POSTS
+
+// GET all posts
+router.get("/posts", function (req, res) {
+	res.send("posts");
+})
+
+// GET individual post
+router.get("/posts/:postId", function (req, res) {
+	res.send("individual post");
+})
+
+// GET form to create new post.
+// POST form to create new post.
+router.post("/posts")
+
+// GET edit form for a post. 
+// UPDATE post.
+router.put('/posts/:postID')
+
+// DESTROY post.
+router.delete('/posts/:postId')
+
+// COMMENTS
+
+// GET all comments for post
+router.get("/posts/:postId/comments", function (req, res) {
+	res.send("comments for post");
+})
+
+// GET individual comment
+router.get("/posts/:postId/comments/:commentId", function (req, res) {
+	res.send("individual comment");
+})
+
+// GET form to create new comment.
+// POST form to create new post. 
+
+// GET edit form for a comment.
+// UPDATE comment. 
+
+// DESTROY comment.
+
+
+
 
 module.exports = router;

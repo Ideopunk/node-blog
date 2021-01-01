@@ -1,6 +1,8 @@
 import "./App.scss";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Editor } from "@tinymce/tinymce-react";
+
 axios.defaults.baseURL = "http://localhost:8080";
 
 const App = () => {
@@ -16,7 +18,9 @@ const App = () => {
 	const [loginPassword, setLoginPassword] = useState("");
 
 	const [token, setToken] = useState(localStorage.getItem("myToken"));
-	axios.defaults.headers.common = { "Authorization": `Bearer ${token}` };
+
+	const [content, setContent] = useState("");
+	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	useEffect(() => {
 		axios.get("/").then((response) => setText(response.data));
@@ -24,13 +28,13 @@ const App = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log(token)
+		console.log(token);
 		axios
 			.get("/profile")
 			.then((response) => {
 				console.log("profile");
 				console.log(response);
-				setText(response.data)
+				setText(response.data);
 			})
 			.catch((err) => console.log(err));
 	}, [token]);
@@ -85,6 +89,11 @@ const App = () => {
 				setToken(response.data.token);
 			})
 			.catch((err) => console.log(err));
+	};
+
+	const handleEditorChange = (newContent, editor) => {
+		console.log("Content was updated:", newContent);
+		setContent(newContent);
 	};
 
 	return (
@@ -159,6 +168,23 @@ const App = () => {
 				</label>
 				<input type="submit" value="Log in" />
 			</form>
+
+			<Editor
+				apiKey="bq2z3nnsyx6agpruod00p08tfiqb8jcv23htolhuud8bnu0z"
+				value={content}
+				init={{
+					height: 500,
+					menubar: false,
+					plugins: [
+						"advlist autolink lists link image charmap print preview anchor",
+						"searchreplace visualblocks code fullscreen",
+						"insertdatetime media table paste code help wordcount",
+					],
+					toolbar:
+						"undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
+				}}
+				onEditorChange={handleEditorChange}
+			/>
 		</div>
 	);
 };

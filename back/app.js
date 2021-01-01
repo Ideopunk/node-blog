@@ -9,7 +9,6 @@ require("./passport");
 const mongoose = require("mongoose");
 
 const index = require("./routes/index");
-const user = require("./routes/user");
 
 const passport = require("passport");
 require("./passport");
@@ -37,9 +36,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(8080, () => console.log("app listening on port 8080"));
 
-// routes
+// route
 app.use("/", index);
-app.use("/user", passport.authenticate("jwt", { session: false }), user);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

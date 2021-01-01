@@ -6,8 +6,9 @@
 	"scripts": {
 		"test": "test",
 		"writer": "cd writer && npm start",
+		"reader": "cd reader && npm start",
 		"back": "cd back && nodemon app.js",
-		"dev": "concurrently \"npm run writer\" \"npm run back\""
+		"dev": "concurrently \"npm run writer\" \"npm run back\" \"npm run reader\" "
 	},
 	"author": "",
 	"license": "ISC",
