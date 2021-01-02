@@ -88,8 +88,14 @@ router.post(
 // BLOG POSTS
 
 // GET all posts
-router.get("/posts", function (req, res) {
-	res.send("posts");
+router.get("/posts", function (req, res, next) {
+	Post.find({ published: true }).exec((err, list_posts) => {
+		if (err) {
+			return next(err);
+		}
+		console.log(list_posts);
+		res.json(list_posts);
+	});
 });
 
 // GET individual post

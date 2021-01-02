@@ -1,5 +1,6 @@
 import "./App.scss";
 import React, { useEffect, useState } from "react";
+import Post from "./Components/Post";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
@@ -14,13 +15,19 @@ const App = () => {
 	}, []);
 
 	useEffect(() => {
-		axios.get("/posts").then((response) => setPosts(response.data));
+		axios.get("/posts").then((response) => {
+			console.log(response.data);
+			const posts = response.data.map((post) => (
+				<Post title={post.title} text={post.text} created={post.create_date_formatted} updated={post.update_date_formatted} />
+			));
+			setPosts(posts);
+		});
 	}, []);
 
-  useEffect(() => {
+	useEffect(() => {
 		axios.get("/posts/yo").then((response) => setPost(response.data));
-  }, []);
-  
+	}, []);
+
 	return (
 		<div className="App">
 			<p>{text}</p>
