@@ -89,18 +89,31 @@ router.post(
 
 // GET all posts
 router.get("/posts", function (req, res, next) {
-	Post.find({ published: true }).populate('user', 'name').exec((err, list_posts) => {
-		if (err) {
-			return next(err);
-		}
-		console.log(list_posts);
-		res.json(list_posts);
-	});
+	Post.find({ published: true })
+		.populate("user", "name")
+		.exec((err, list_posts) => {
+			if (err) {
+				return next(err);
+			}
+			console.log(list_posts);
+			res.json(list_posts);
+		});
 });
 
 // GET individual post
-router.get("/posts/:postId", function (req, res) {
-	res.send("individual post");
+router.get("/posts/:postId", function (req, res, next) {
+	Post.findById(req.params.postId)
+		.populate("user", "name")
+		.exec((err, item) => {
+			if (err) {
+				return next(err);
+			}
+
+			if (!item.published) {
+				res.json("this post isn't published lmao how did you get in here!");
+			}
+			res.json(item);
+		});
 });
 
 // GET form to create new post.

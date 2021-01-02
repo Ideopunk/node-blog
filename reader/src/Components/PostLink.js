@@ -1,8 +1,6 @@
-const PostLink = ({ title, preview, created, name }) => {
-
-
+const PostLink = ({ title, preview, created, name, id, setDisplay }) => {
 	return (
-		<div className="post">
+		<div onClick={() => setDisplay(id)} className="post-link">
 			<h2>{title}</h2>
 			<p>{name}</p>
 			<time>{created}</time>
