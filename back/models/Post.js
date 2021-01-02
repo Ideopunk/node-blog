@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const { DateTime } = require("luxon");
-
 const { Schema } = mongoose;
+const { JSDOM } = require("jsdom");
 
 const PostSchema = new Schema(
 	{
@@ -22,6 +22,14 @@ PostSchema.virtual("create_date_formatted").get(function () {
 
 PostSchema.virtual("update_date_formatted").get(function () {
 	return DateTime.fromJSDate(this.updatedAt).toLocaleString(DateTime.DATETIME_MED);
+});
+
+PostSchema.virtual("preview").get(function () {
+	const dom = new JSDOM(this.text);
+	const substring = dom.window.document.body.textContent.substr(0, 140).trim();
+	console.log(dom.window.document.body.textContent);
+	console.log(substring);
+	return substring + "...";
 });
 
 module.exports = mongoose.model("Post", PostSchema);

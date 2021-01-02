@@ -1,11 +1,12 @@
-const Post = ({ title, text, created, updated }) => {
+const PostFull = ({ title, preview, created, updated, name }) => {
 	function createMarkup() {
-		return { __html: text };
+		return { __html: preview };
 	}
 
 	return (
 		<div className="post">
 			<h2>{title}</h2>
+			<p>{name}</p>
 			<time>{created}</time>
 			{updated !== created && <time>Updated: {updated}</time>}
 			<div dangerouslySetInnerHTML={createMarkup()}></div>
@@ -13,4 +14,4 @@ const Post = ({ title, text, created, updated }) => {
 	);
 };
 
-export default Post;
+export default PostFull;

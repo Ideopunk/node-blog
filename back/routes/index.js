@@ -89,7 +89,7 @@ router.post(
 
 // GET all posts
 router.get("/posts", function (req, res, next) {
-	Post.find({ published: true }).exec((err, list_posts) => {
+	Post.find({ published: true }).populate('user', 'name').exec((err, list_posts) => {
 		if (err) {
 			return next(err);
 		}
