@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const { DateTime } = require("luxon");
 const { Schema } = mongoose;
 
 const CommentSchema = new Schema(
@@ -10,5 +10,9 @@ const CommentSchema = new Schema(
 	},
 	{ timestamps: true }
 );
+
+CommentSchema.virtual("create_date_formatted").get(function () {
+	return DateTime.fromJSDate(this.createdAt).toLocaleString(DateTime.DATETIME_MED);
+});
 
 module.exports = mongoose.model("Comment", CommentSchema);

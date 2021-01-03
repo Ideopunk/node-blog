@@ -6,6 +6,7 @@ const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 const createDOMPurify = require("dompurify");
 const { JSDOM } = require("jsdom");
 
@@ -15,8 +16,11 @@ router.get("/", function (req, res) {
 });
 
 /* GET user profile. Protected route */
-router.get("/profile", passport.authenticate("jwt", { session: false }), (req, res) => {
-	res.json({ name: req.user.name, id: req.user._id });
+router.get("/user", passport.authenticate("jwt", { session: false }), (req, res) => {
+	
+	Post.find({"user": req.user._id}).then((posts) => {
+		res.json({ name: req.user.name, id: req.user._id, posts: posts });
+	});
 });
 
 /* POST login. */

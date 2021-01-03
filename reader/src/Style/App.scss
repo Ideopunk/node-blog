@@ -9,6 +9,13 @@ time {
 	font-style: italic;
 }
 
+.App {
+	padding: 2rem;
+	box-sizing: border-box;
+	height: 100vh;
+	background: linear-gradient(rgb(156, 194, 230), rgb(241, 183, 124));
+}
+
 .post-container {
 }
 

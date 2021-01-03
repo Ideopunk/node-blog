@@ -8,6 +8,7 @@ const PostFull = ({ postID, setDisplay }) => {
 	const [created, setCreated] = useState("");
 	const [updated, setUpdated] = useState("");
 	const [name, setName] = useState("");
+	const [comments, setComments] = useState([]);
 
 	useEffect(() => {
 		console.log(postID);
@@ -17,9 +18,17 @@ const PostFull = ({ postID, setDisplay }) => {
 				console.log(response.data);
 				setTitle(response.data.title);
 				setText(response.data.text);
-				setCreated(response.data.created);
-				setUpdated(response.data.updated);
-				setName(response.data.name);
+				setCreated(response.data.create_date_formatted);
+				setUpdated(response.data.update_date_formatted);
+				setName(response.data.user.name);
+			})
+			.catch((err) => console.log(err));
+
+		axios
+			.get(`/posts/${postID}/comments`)
+			.then((response) => {
+				console.log(response);
+				setComments(response.data);
 			})
 			.catch((err) => console.log(err));
 	}, [postID]);
@@ -30,11 +39,20 @@ const PostFull = ({ postID, setDisplay }) => {
 
 	const handleCoverClick = (e) => {
 		if (e.target.getAttribute("name") === "cover") {
-			console.log("got em!")
-			setDisplay("")
-		};
+			console.log("got em!");
+			setDisplay("");
+		}
 	};
 
+	const commentDisplay = (array) => {
+		return array.map((comment) => (
+			<div>
+				<h3>{comment.user.name}</h3>
+				<time>{comment.create_date_formatted}</time>
+				<p>{comment.text}</p>
+			</div>
+		));
+	};
 	return (
 		<div name="cover" className="cover" onClick={handleCoverClick}>
 			<div className="post-full">
@@ -43,6 +61,7 @@ const PostFull = ({ postID, setDisplay }) => {
 				<time>{created}</time>
 				{updated !== created && <time>Updated: {updated}</time>}
 				<div className="mrg-top" dangerouslySetInnerHTML={createMarkup()}></div>
+				<div>{commentDisplay(comments)}</div>
 			</div>
 		</div>
 	);

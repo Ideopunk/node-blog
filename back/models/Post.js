@@ -20,6 +20,10 @@ PostSchema.virtual("create_date_formatted").get(function () {
 	return DateTime.fromJSDate(this.createdAt).toLocaleString(DateTime.DATETIME_MED);
 });
 
+PostSchema.virtual("create_date_formatted_short").get(function () {
+	return DateTime.fromJSDate(this.createdAt).toLocaleString(DateTime.DATE_MED);
+});
+
 PostSchema.virtual("update_date_formatted").get(function () {
 	return DateTime.fromJSDate(this.updatedAt).toLocaleString(DateTime.DATETIME_MED);
 });
