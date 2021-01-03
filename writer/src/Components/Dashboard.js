@@ -28,7 +28,13 @@ const Dashboard = ({ posts, updateID, setUpdateID }) => {
 
 	return (
 		<ul className="dashboard">
-			<li className="post-link" key="new">
+			<li
+				className="post-link"
+				key="new"
+				onClick={() => {
+					setUpdateID("");
+				}}
+			>
 				New Post
 			</li>
 			{postsJSX}

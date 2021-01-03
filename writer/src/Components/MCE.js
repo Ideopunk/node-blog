@@ -1,13 +1,27 @@
 import { Editor } from "@tinymce/tinymce-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
-const MCE = ({ name, id, token }) => {
+const MCE = ({ name, id, token, updateID }) => {
 	const [content, setContent] = useState("");
 	const [title, setTitle] = useState("");
 	const [publish, setPublish] = useState(false);
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
+
+	useEffect(() => {
+		if (updateID) {
+			axios.get(`/posts/${updateID}`).then((response) => {
+				setContent(response.data.text);
+				setTitle(response.data.title);
+				setPublish(response.data.published);
+			});
+		} else {
+			setContent("");
+			setTitle("");
+			setPublish(false);
+		}
+	}, [updateID]);
 
 	const handleEditorChange = (newContent, editor) => {
 		console.log("Content was updated:", newContent);
@@ -22,22 +36,26 @@ const MCE = ({ name, id, token }) => {
 		e.preventDefault();
 		if (name) {
 			console.log(content);
-			axios
-				.post("/posts", {
-					user: id,
-					title: title,
-					content: content,
-					published: publish,
-				})
-				.then((response) => {
-					console.log(response);
-					if (response.status === 200) {
-						setTitle("");
-						setContent("");
-						setPublish(false);
-					}
-				})
-				.catch((err) => console.log(err));
+			if (updateID) {
+				console.log("update");
+			} else {
+				axios
+					.post("/posts", {
+						user: id,
+						title: title,
+						content: content,
+						published: publish,
+					})
+					.then((response) => {
+						console.log(response);
+						if (response.status === 200) {
+							setTitle("");
+							setContent("");
+							setPublish(false);
+						}
+					})
+					.catch((err) => console.log(err));
+			}
 		} else {
 			alert("You must be signed in in order to post!");
 		}
@@ -72,7 +90,7 @@ const MCE = ({ name, id, token }) => {
 					<div></div>
 				</label>
 			</div>
-			<input type="submit" value="Post" />
+			<input type="submit" value={!publish ? "Save" : updateID ? "Update" : "Post"} />
 		</form>
 	);
 };
