@@ -62,7 +62,7 @@ const MCE = ({ name, id, token }) => {
 				}}
 				onEditorChange={handleEditorChange}
 			/>
-			<div class="container">
+			<div class="switch-container">
 				<label class="switch">
 					<input
 						type="checkbox"

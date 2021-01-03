@@ -1,4 +1,4 @@
-import "./App.scss";
+import "./Style/App.scss";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MCE from "./Components/MCE";

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
-const PostFull = ({ postID }) => {
+const PostFull = ({ postID, setDisplay }) => {
 	const [title, setTitle] = useState("");
 	const [text, setText] = useState("");
 	const [created, setCreated] = useState("");
@@ -28,13 +28,22 @@ const PostFull = ({ postID }) => {
 		return { __html: text };
 	}
 
+	const handleCoverClick = (e) => {
+		if (e.target.getAttribute("name") === "cover") {
+			console.log("got em!")
+			setDisplay("")
+		};
+	};
+
 	return (
-		<div className="post-full">
-			<h2>{title}</h2>
-			<p>{name}</p>
-			<time>{created}</time>
-			{updated !== created && <time>Updated: {updated}</time>}
-			<div dangerouslySetInnerHTML={createMarkup()}></div>
+		<div name="cover" className="cover" onClick={handleCoverClick}>
+			<div className="post-full">
+				<h2>{title}</h2>
+				<p>{name}</p>
+				<time>{created}</time>
+				{updated !== created && <time>Updated: {updated}</time>}
+				<div className="mrg-top" dangerouslySetInnerHTML={createMarkup()}></div>
+			</div>
 		</div>
 	);
 };

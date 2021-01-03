@@ -1,4 +1,4 @@
-import "./App.scss";
+import "./Style/App.scss";
 import React, { useEffect, useState } from "react";
 import PostLink from "./Components/PostLink";
 import PostFull from "./Components/PostFull";
@@ -8,14 +8,13 @@ axios.defaults.baseURL = "http://localhost:8080";
 const App = () => {
 	const [text, setText] = useState("");
 	const [posts, setPosts] = useState("");
-	const [post, setPost] = useState("");
+	const [display, setDisplay] = useState("");
 
 	useEffect(() => {
 		axios.get("/").then((response) => setText(response.data));
 		// axios.get
 	}, []);
 
-	const [display, setDisplay] = useState("");
 
 	useEffect(() => {
 		axios.get("/posts").then((response) => {
@@ -35,16 +34,11 @@ const App = () => {
 		});
 	}, []);
 
-	useEffect(() => {
-		axios.get("/posts/yo").then((response) => setPost(response.data));
-	}, []);
-
 	return (
 		<div className="App">
 			<p>{text}</p>
-			<div>{posts}</div>
-			<div>{post}</div>
-			{display && <PostFull postID={display} />}
+			<div className="post-container">{posts}</div>
+			{display && <PostFull postID={display} setDisplay={setDisplay}/>}
 		</div>
 	);
 };
