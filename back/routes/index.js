@@ -162,12 +162,28 @@ router.delete("/posts/:postId", passport.authenticate("jwt", { session: false })
 
 // GET all comments for post
 router.get("/posts/:postId/comments", function (req, res) {
-	res.send("comments for post");
+	Comment.find({ post: req.params.postId })
+		.populate("user", "name")
+		.exec((err, list_comments) => {
+			if (err) {
+				return next(err);
+			}
+			console.log(list_comments);
+			res.json(list_comments);
+		});
 });
 
 // GET individual comment
 router.get("/posts/:postId/comments/:commentId", function (req, res) {
-	res.send("individual comment");
+	Comment.findById(req.params.commentId)
+		.populate("user", "name")
+		.exec((err, item) => {
+			if (err) {
+				return next(err);
+			}
+
+			res.json(item);
+		});
 });
 
 // GET form to create new comment.
@@ -175,7 +191,30 @@ router.get("/posts/:postId/comments/:commentId", function (req, res) {
 router.post(
 	"/posts/:postID/comments",
 	passport.authenticate("jwt", { session: false }),
-	(req, res) => {}
+	(req, res) => [
+		body("text", "Write something!").trim().isLength({ min: 1 }).escape(),
+		(req, res, next) => {
+			const errors = validationResult(req);
+
+			if (!errors.isEmpty()) {
+				return res.status(400).json({ errors: errors.array() });
+			}
+
+			const comment = new Comment({
+				post: req.params.postId,
+				text: req.body.text,
+				user: req.user._id,
+			});
+
+			console.log(comment);
+			comment.save((err) => {
+				if (err) {
+					return next(err);
+				}
+				res.redirect(`/posts/${req.params.postId}`);
+			});
+		},
+	]
 );
 
 // GET edit form for a comment.
