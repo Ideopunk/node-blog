@@ -68,21 +68,26 @@ router.post("/", passport.authenticate("jwt", { session: false }), [
 			if (err) {
 				return next(err);
 			}
-			res.redirect("/");
+			// res.redirect("/");
 		});
 	},
 ]);
 
 // GET edit form for a post.
 // UPDATE post.
-router.put("/:postID", passport.authenticate("jwt", { session: false }), (req, res) => {
+router.put(
+	"/:postID",
+	passport.authenticate("jwt", { session: false }),
 	[
 		body("title", "Posts require titles").trim().isLength({ min: 1 }).escape(),
 		body("published", "Publication status must be specified").isBoolean(),
 		(req, res, next) => {
+			console.log(req.body);
+
 			Post.findById(req.params.postID).then((post) => {
 				// make sure this user is allowed to do this...
-				if (req.user === post.user) {
+				if (req.user._id.toString() === post.user.toString()) {
+					console.log("we in");
 					const errors = validationResult(req);
 
 					if (!errors.isEmpty()) {
@@ -117,9 +122,9 @@ router.put("/:postID", passport.authenticate("jwt", { session: false }), (req, r
 				}
 			});
 		},
-	];
+	]
 	// if userID matches, update.
-});
+);
 
 // DESTROY post.
 router.delete("/:postId", passport.authenticate("jwt", { session: false }), (req, res) => {});

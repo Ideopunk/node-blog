@@ -51,7 +51,7 @@ const App = () => {
 						<Login token={token} setToken={setToken} />
 					</>
 				)}
-				<MCE updateID={updateID} name={name} id={id} token={token} />
+				<MCE updateID={updateID} setUpdateID={setUpdateID} name={name} id={id} token={token} />
 				{updateID && <Comments postID={updateID} />}
 			</div>
 		</div>

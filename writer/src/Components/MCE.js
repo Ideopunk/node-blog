@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
-const MCE = ({ name, id, token, updateID }) => {
+const MCE = ({ name, id, token, updateID, setUpdateID }) => {
 	const [content, setContent] = useState("");
 	const [title, setTitle] = useState("");
 	const [publish, setPublish] = useState(false);
@@ -58,7 +58,23 @@ const MCE = ({ name, id, token, updateID }) => {
 			console.log(content);
 			if (updateID) {
 				console.log("update");
-				// axios.put(``)
+				axios
+					.put(`posts/${updateID}`, {
+						user: id,
+						title: title,
+						content: content,
+						published: publish,
+					})
+					.then((response) => {
+						console.log(response);
+						if (response.status === 200) {
+							setUpdateID("");
+							setTitle("");
+							setContent("");
+							setPublish(false);
+						}
+					})
+					.catch((err) => console.log(err));
 			} else {
 				axios
 					.post("/posts", {
