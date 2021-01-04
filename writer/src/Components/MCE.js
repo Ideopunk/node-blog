@@ -58,6 +58,7 @@ const MCE = ({ name, id, token, updateID }) => {
 			console.log(content);
 			if (updateID) {
 				console.log("update");
+				// axios.put(``)
 			} else {
 				axios
 					.post("/posts", {

@@ -7,7 +7,6 @@ const Comment = require("../models/Comment");
 const createDOMPurify = require("dompurify");
 const { JSDOM } = require("jsdom");
 
-
 // BLOG POSTS
 
 // GET all posts
@@ -76,7 +75,51 @@ router.post("/", passport.authenticate("jwt", { session: false }), [
 
 // GET edit form for a post.
 // UPDATE post.
-router.put("/:postID", passport.authenticate("jwt", { session: false }), (req, res) => {});
+router.put("/:postID", passport.authenticate("jwt", { session: false }), (req, res) => {
+	[
+		body("title", "Posts require titles").trim().isLength({ min: 1 }).escape(),
+		body("published", "Publication status must be specified").isBoolean(),
+		(req, res, next) => {
+			Post.findById(req.params.postID).then((post) => {
+				// make sure this user is allowed to do this...
+				if (req.user === post.user) {
+					const errors = validationResult(req);
+
+					if (!errors.isEmpty()) {
+						return res.status(400).json({ errors: errors.array() });
+					}
+
+					// dompurify stuff...
+					const window = new JSDOM("").window;
+					const DOMPurify = createDOMPurify(window);
+
+					const clean = DOMPurify.sanitize(req.body.content);
+
+					const post = new Post({
+						title: req.body.title,
+						text: clean,
+						user: req.user._id,
+						published: req.body.published,
+						_id: req.params.postID,
+					});
+
+					console.log(post);
+
+					Post.findByIdAndUpdate(req.params.postID, post, {}, (err, thepost) => {
+						if (err) {
+							return next(err);
+						}
+
+						res.json("Success");
+					});
+				} else {
+					return res.status(403);
+				}
+			});
+		},
+	];
+	// if userID matches, update.
+});
 
 // DESTROY post.
 router.delete("/:postId", passport.authenticate("jwt", { session: false }), (req, res) => {});

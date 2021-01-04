@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 var express = require("express");
 var router = express.Router();
 const passport = require("passport");
+require("../passport");
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
@@ -14,8 +15,7 @@ router.get("/", function (req, res) {
 
 /* GET user profile. Protected route */
 router.get("/user", passport.authenticate("jwt", { session: false }), (req, res) => {
-	
-	Post.find({"user": req.user._id}).then((posts) => {
+	Post.find({ user: req.user._id }).then((posts) => {
 		res.json({ name: req.user.name, id: req.user._id, posts: posts });
 	});
 });
@@ -85,6 +85,5 @@ router.post(
 		});
 	}
 );
-
 
 module.exports = router;

@@ -61,10 +61,6 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 	},
 ]);
 
-// GET edit form for a comment.
-// UPDATE comment.
-router.put("/:commentId", passport.authenticate("jwt", { session: false }), (req, res) => {});
-
 // DESTROY comment.
 router.delete("/:commentId", passport.authenticate("jwt", { session: false }), (req, res) => {});
 
