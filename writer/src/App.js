@@ -39,7 +39,7 @@ const App = () => {
 
 	return (
 		<div className="App flex">
-			<Dashboard posts={posts} setUpdateID={setUpdateID} />
+			<Dashboard token={token} posts={posts} setUpdateID={setUpdateID} />
 			<div className="main">
 				<p>{name ? `Hi ${name}!` : "Hi there!"}</p>
 				<p>{text}</p>

@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const passport = require("passport");
+const async = require("async");
 const { body, validationResult } = require("express-validator");
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
@@ -127,6 +128,33 @@ router.put(
 );
 
 // DESTROY post.
-router.delete("/:postId", passport.authenticate("jwt", { session: false }), (req, res) => {});
+router.delete("/:postID", passport.authenticate("jwt", { session: false }), (req, res) => {
+	Post.findById(req.params.postID).then((results, err) => {
+		console.log("we got in, delete");
+		if (err) {
+			return next(err);
+		}
+
+		if (req.user._id.toString() === results.user.toString()) {
+			async.parallel(
+				{
+					a: (callback) => {
+						Post.findByIdAndDelete(req.params.postID).exec(callback);
+					},
+					b: (callback) => {
+						Comment.find({ post: req.params.postID }).exec(callback);
+					},
+				},
+				function (err, results) {
+					if (err) {
+						return next(err);
+					}
+
+					res.json("successful deletion");
+				}
+			);
+		}
+	});
+});
 
 module.exports = router;
