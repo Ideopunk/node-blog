@@ -17,11 +17,31 @@ const MCE = ({ name, id, token, updateID }) => {
 				setPublish(response.data.published);
 			});
 		} else {
-			setContent("");
-			setTitle("");
-			setPublish(false);
+			setContent(localStorage.getItem("content") || "");
+			setTitle(localStorage.getItem("title") || "");
+			setPublish(localStorage.getItem("published") || false);
 		}
 	}, [updateID]);
+
+	// useEffect(() => {
+	// 	function storageUpdate() {
+	// 		console.log('it happen')
+	// 		localStorage.setItem("content", content);
+	// 		localStorage.setItem("title", title);
+	// 		localStorage.setItem("publish", publish);
+	// 	}
+
+	// 	let intervaler;
+
+	// 	if (!updateID) {
+	// 		console.log('okay')
+	// 		intervaler = setInterval(storageUpdate, 5000);
+	// 	} else {
+	// 		console.log(updateID)
+	// 	}
+
+	// 	return clearInterval(intervaler);
+	// }, [updateID, content, title, publish]);
 
 	const handleEditorChange = (newContent, editor) => {
 		console.log("Content was updated:", newContent);
@@ -63,7 +83,26 @@ const MCE = ({ name, id, token, updateID }) => {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<input name="title" placeholder="Title" onChange={handleTitleChange} value={title} />
+			<div className="flex straight mrg">
+				<input
+					name="title"
+					placeholder="Title"
+					onChange={handleTitleChange}
+					value={title}
+				/>
+				<div class="switch-container">
+					Save draft
+					<label class="switch">
+						<input
+							type="checkbox"
+							checked={publish}
+							onChange={() => setPublish(!publish)}
+						/>{" "}
+						<div></div>
+					</label>
+				</div>
+			</div>
+
 			<Editor
 				apiKey="bq2z3nnsyx6agpruod00p08tfiqb8jcv23htolhuud8bnu0z"
 				value={content}
@@ -80,17 +119,12 @@ const MCE = ({ name, id, token, updateID }) => {
 				}}
 				onEditorChange={handleEditorChange}
 			/>
-			<div class="switch-container">
-				<label class="switch">
-					<input
-						type="checkbox"
-						checked={publish}
-						onChange={() => setPublish(!publish)}
-					/>{" "}
-					<div></div>
-				</label>
-			</div>
-			<input type="submit" value={!publish ? "Save" : updateID ? "Update" : "Post"} />
+
+			<input
+				type="submit"
+				className="btn"
+				value={!publish ? "Save" : updateID ? "Update" : "Post"}
+			/>
 		</form>
 	);
 };

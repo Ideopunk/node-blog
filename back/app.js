@@ -5,13 +5,11 @@ var path = require("path");
 const cors = require("cors");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-require("./passport");
 const mongoose = require("mongoose");
 
 const index = require("./routes/index");
-
-const passport = require("passport");
-require("./passport");
+const posts = require("./routes/posts");
+const comments = require("./routes/comments");
 
 var app = express();
 
@@ -38,6 +36,8 @@ app.listen(8080, () => console.log("app listening on port 8080"));
 
 // route
 app.use("/", index);
+app.use("/posts/:postID/comments", comments);
+app.use("/posts", posts);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -5,6 +5,7 @@ import MCE from "./Components/MCE";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import Dashboard from "./Components/Dashboard";
+import Comments from "./Components/Comments";
 axios.defaults.baseURL = "http://localhost:8080";
 
 const App = () => {
@@ -37,7 +38,7 @@ const App = () => {
 	}, [token]);
 
 	return (
-		<div className="App">
+		<div className="App flex">
 			<Dashboard posts={posts} setUpdateID={setUpdateID} />
 			<div className="main">
 				<p>{name ? `Hi ${name}!` : "Hi there!"}</p>
@@ -51,6 +52,7 @@ const App = () => {
 					</>
 				)}
 				<MCE updateID={updateID} name={name} id={id} token={token} />
+				{updateID && <Comments postID={updateID} />}
 			</div>
 		</div>
 	);

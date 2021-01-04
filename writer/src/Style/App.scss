@@ -11,20 +11,40 @@ time {
 	width: 100vw;
 }
 
-.App {
+.btn {
+	background-color: white;
+	border-radius: 999px;
+	border: 1px solid black;
+}
+
+.flex {
 	display: flex;
+}
+
+.mrg{
+	margin: 1rem;
+}
+
+.straight{
+	align-items: center;
 }
 
 .dashboard {
 	height: 100vh;
 	background-color: grey;
-    padding: 1rem;
+	padding: 1rem;
+	box-sizing: border-box;
     white-space: nowrap;
     
 }
 
 .post-link {
 	display: flex;
+	box-sizing: border-box;
+	padding: 0.5rem;
+	margin: 0.5rem;
+	border: 1px solid blue;
+	border-radius: 9999px;
 }
 
 .icon {
