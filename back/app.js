@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 const index = require("./routes/index");
 const posts = require("./routes/posts");
 const comments = require("./routes/comments");
+const auth = require("./routes/auth");
 
 var app = express();
 
@@ -38,6 +39,7 @@ app.listen(8080, () => console.log("app listening on port 8080"));
 app.use("/", index);
 app.use("/posts/:postID/comments", comments);
 app.use("/posts", posts);
+app.use("/auth", auth);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -3,10 +3,13 @@ var express = require("express");
 var router = express.Router();
 const passport = require("passport");
 require("../passport");
+const mail = require("../mail");
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Code = require("../models/Code");
 const Post = require("../models/Post");
+const { v4: uuidv4 } = require("uuid");
 
 /* GET users listing. */
 router.get("/", function (req, res) {
@@ -80,7 +83,22 @@ router.post(
 					console.log(err);
 					return next(err);
 				}
-				res.redirect("/");
+
+				// now send an email to verify
+
+				const secret = uuidv4();
+
+				const code = new Code({
+					email: req.body.username,
+					code: secret,
+				}).save((err, doc) => {
+					if (err) {
+						console.log(err);
+						return next(err);
+					}
+
+					mail(req.body.username, secret, doc._id);
+				});
 			});
 		});
 	}
