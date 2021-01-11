@@ -36,9 +36,10 @@ router.get("/:commentId", function (req, res) {
 
 // GET form to create new comment.
 // POST form to create new comment.
-router.post("/", passport.authenticate("jwt", { session: false }), (req, res) => [
+router.post("/", passport.authenticate("jwt", { session: false }), [
 	body("text", "Write something!").trim().isLength({ min: 1 }).escape(),
 	(req, res, next) => {
+		console.log("we in");
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
@@ -57,10 +58,10 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 				if (err) {
 					return next(err);
 				}
-				res.redirect(`/posts/${req.params.postId}`);
+				res.json(`success`);
 			});
 		} else {
-			return res.json({message: "user is not verified"})
+			return res.json({ message: "user is not verified" });
 		}
 	},
 ]);

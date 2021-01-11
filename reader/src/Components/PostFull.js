@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Commenter from "./Commenter";
 axios.defaults.baseURL = "http://localhost:8080";
 
-const PostFull = ({ postID, setDisplay }) => {
+const PostFull = ({ postID, setDisplay, token }) => {
+	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
+
 	const [title, setTitle] = useState("");
 	const [text, setText] = useState("");
 	const [created, setCreated] = useState("");
@@ -62,6 +65,7 @@ const PostFull = ({ postID, setDisplay }) => {
 				{updated !== created && <time>Updated: {updated}</time>}
 				<div className="mrg-top" dangerouslySetInnerHTML={createMarkup()}></div>
 				<div>{commentDisplay(comments)}</div>
+				<Commenter postID={postID} token={token} />
 			</div>
 		</div>
 	);

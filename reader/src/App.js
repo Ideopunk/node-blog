@@ -2,19 +2,32 @@ import "./Style/App.scss";
 import React, { useEffect, useState } from "react";
 import PostLink from "./Components/PostLink";
 import PostFull from "./Components/PostFull";
+import Signup from "./Components/Signup";
+import Login from "./Components/Login";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
 const App = () => {
-	const [text, setText] = useState("");
 	const [posts, setPosts] = useState("");
 	const [display, setDisplay] = useState("");
+	const [token, setToken] = useState(localStorage.getItem("myToken"));
+	const [verification, setVerification] = useState(false);
+	const [name, setName] = useState("");
+	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
+	// protected
 	useEffect(() => {
-		axios.get("/").then((response) => setText(response.data));
-		// axios.get
-	}, []);
-
+		console.log(token);
+		axios
+			.get("/user")
+			.then((response) => {
+				console.log("profile");
+				console.log(response);
+				setName(response.data.name);
+				setVerification(response.data.status === "verified" ? true : false);
+			})
+			.catch((err) => console.log(err));
+	}, [token]);
 
 	useEffect(() => {
 		axios.get("/posts").then((response) => {
@@ -34,11 +47,40 @@ const App = () => {
 		});
 	}, []);
 
+	const verifyEmail = () => {
+		axios
+			.post(`/auth`)
+			.then((response) => {
+				console.log(response);
+				if (response.status === 404) {
+					console.log("code not found, resend code. ");
+				} else {
+					setVerification(response.data.status === "verified" ? true : false);
+				}
+			})
+			.catch((err) => console.log(err));
+	};
+
 	return (
 		<div className="App">
-			<p>{text}</p>
+			<p>{name}</p>
 			<div className="post-container">{posts}</div>
-			{display && <PostFull postID={display} setDisplay={setDisplay}/>}
+			{display && (
+				<PostFull
+					postID={display}
+					setDisplay={setDisplay}
+					verification={verification}
+					verifyEmail={verifyEmail}
+					token={token}
+				/>
+			)}
+			{!name && (
+				<>
+					<Signup />
+
+					<Login token={token} setToken={setToken} />
+				</>
+			)}
 		</div>
 	);
 };
