@@ -21,11 +21,11 @@ time {
 	display: flex;
 }
 
-.mrg{
+.mrg {
 	margin: 1rem;
 }
 
-.straight{
+.straight {
 	align-items: center;
 }
 
@@ -34,8 +34,7 @@ time {
 	background-color: grey;
 	padding: 1rem;
 	box-sizing: border-box;
-    white-space: nowrap;
-    
+	white-space: nowrap;
 }
 
 .post-link {
@@ -48,9 +47,8 @@ time {
 }
 
 .icon {
-    width: 1rem;
+	width: 1rem;
 }
-
 
 .main {
 	display: flex;
@@ -60,4 +58,21 @@ time {
 	align-items: center;
 	box-sizing: border-box;
 	padding: 2rem;
+}
+
+.cover {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(100, 100, 100, 0.5);
+	z-index: 2;
+}
+
+.codescreen {
+	background-color: white;
 }

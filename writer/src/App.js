@@ -44,14 +44,22 @@ const App = () => {
 			.post(`/auth`)
 			.then((response) => {
 				console.log(response);
-				setVerification(response.data.status)
+				if (response.status === 404) {
+					console.log('code not found, resend code. ')
+				}
 			})
 			.catch((err) => console.log(err));
 	};
 
 	return (
 		<div className="App flex">
-			<Dashboard token={token} posts={posts} setUpdateID={setUpdateID} verification={verification} verifyEmail={verifyEmail}/>
+			<Dashboard
+				token={token}
+				posts={posts}
+				setUpdateID={setUpdateID}
+				verification={verification}
+				verifyEmail={verifyEmail}
+			/>
 			<div className="main">
 				<p>{name ? `Hi ${name}!` : "Hi there!"}</p>
 				<p>{text}</p>

@@ -39,30 +39,28 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 });
 
 // verify code
-router.post("/secret", passport.authenticate("jwt", { session: false }), (req, res) => {
+router.post("/secret", passport.authenticate("jwt", { session: false }), (req, res, next) => {
 	console.log(req.user);
+
+	console.log("first");
+
+	Code.findOne({ email: req.user.username }, (err, code) => {
+		console.log("code find one");
+		if (err) {
+			return next(err);
+		}
+		if (code && req.body.secret === code.code) {
+			User.updateOne({ _id: req.user._id }, { status: "verified" }, (err) => {
+				if (err) {
+					console.log(err);
+					return next(err);
+				}
+				res.json("success");
+			});
+		} else {
+			res.json("invalid code");
+		}
+	});
 });
-
-// router.post("/secret", passport.authenticate("jwt", { session: false }), (req, res) => {
-// 	console.log(req.user);
-// 	if (err) {
-// 		console.log(err);
-// 		return next(err);
-// 	}
-
-// 	Code.findOne({ email: req.user.username }, (err, code) => {
-// 		if (err) {
-// 			return next(err);
-// 		}
-// 		if (req.body.secret === code.code) {
-// 			User.updateOne({ _id: req.user._id }, { status: "verified" }, (err) => {
-// 				if (err) {
-// 					return next(err);
-// 				}
-// 				res.json("success");
-// 			});
-// 		}
-// 	});
-// });
 
 module.exports = router;

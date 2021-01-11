@@ -65,7 +65,7 @@ const Dashboard = ({ posts, updateID, setUpdateID, token, verification, verifyEm
 				</>
 			)}
 
-			{codeScreen && <CodeScreen token={token} />}
+			{codeScreen && <CodeScreen token={token} setCodeScreen={setCodeScreen}/>}
 		</ul>
 	);
 };
