@@ -19,7 +19,7 @@ router.get("/", function (req, res) {
 /* GET user profile. Protected route */
 router.get("/user", passport.authenticate("jwt", { session: false }), (req, res) => {
 	Post.find({ user: req.user._id }).then((posts) => {
-		res.json({ name: req.user.name, id: req.user._id, posts: posts });
+		res.json({ name: req.user.name, id: req.user._id, posts: posts, status: req.user.status });
 	});
 });
 

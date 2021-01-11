@@ -47,30 +47,34 @@ router.post("/", passport.authenticate("jwt", { session: false }), [
 	(req, res, next) => {
 		const errors = validationResult(req);
 
-		if (!errors.isEmpty()) {
-			return res.status(400).json({ errors: errors.array() });
-		}
-
-		// dompurify stuff...
-		const window = new JSDOM("").window;
-		const DOMPurify = createDOMPurify(window);
-
-		const clean = DOMPurify.sanitize(req.body.content);
-
-		const post = new Post({
-			title: req.body.title,
-			text: clean,
-			user: req.user._id,
-			published: req.body.published,
-		});
-
-		console.log(post);
-		post.save((err) => {
-			if (err) {
-				return next(err);
+		if (req.user.status === "verified") {
+			if (!errors.isEmpty()) {
+				return res.status(400).json({ errors: errors.array() });
 			}
-			// res.redirect("/");
-		});
+
+			// dompurify stuff...
+			const window = new JSDOM("").window;
+			const DOMPurify = createDOMPurify(window);
+
+			const clean = DOMPurify.sanitize(req.body.content);
+
+			const post = new Post({
+				title: req.body.title,
+				text: clean,
+				user: req.user._id,
+				published: req.body.published,
+			});
+
+			console.log(post);
+			post.save((err) => {
+				if (err) {
+					return next(err);
+				}
+				res.json("success");
+			});
+		} else {
+			return next({ message: "user is unverified" });
+		}
 	},
 ]);
 
@@ -87,7 +91,10 @@ router.put(
 
 			Post.findById(req.params.postID).then((post) => {
 				// make sure this user is allowed to do this...
-				if (req.user._id.toString() === post.user.toString()) {
+				if (
+					req.user._id.toString() === post.user.toString() &&
+					req.user.status === "verified"
+				) {
 					console.log("we in");
 					const errors = validationResult(req);
 
@@ -135,7 +142,7 @@ router.delete("/:postID", passport.authenticate("jwt", { session: false }), (req
 			return next(err);
 		}
 
-		if (req.user._id.toString() === results.user.toString()) {
+		if (req.user._id.toString() === results.user.toString() && req.user.status === "verified") {
 			async.parallel(
 				{
 					a: (callback) => {

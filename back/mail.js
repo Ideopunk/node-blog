@@ -2,13 +2,15 @@ const nodemailer = require("nodemailer");
 
 const mail = (receiver, secret, id) => {
 	// now send an email to verify
-	let transporter = nodemailer.createTransport(transport);
+	let transporter = nodemailer.createTransport({
+		auth: { user: "ideopunk@mail.com", pass: process.env.PASS },
+	});
 
 	let message = {
 		from: "ideopunk@mail.com",
 		to: receiver,
 		subject: "Email verification",
-		html:   `<p>Hi there! It looks like you've registered for Conor Barnes's Node blog project. \
+		html: `<p>Hi there! It looks like you've registered for Conor Barnes's Node blog project. \
                 To verify your account, click this link: \
                 <a href="localhost:3000/auth/${id}/${secret}">localhost:3000/auth/${id}/${secret}</a></p>`,
 	};
@@ -22,4 +24,4 @@ const mail = (receiver, secret, id) => {
 	});
 };
 
-export default mail;
+module.exports = mail;
