@@ -4,16 +4,20 @@ const User = require("../models/User");
 const Code = require("../models/Code");
 const passport = require("passport");
 const { v4: uuidv4 } = require("uuid");
+const mail = require("../mail");
 require("../passport");
+require("../mail");
 
 // send a new code
 router.post("/", passport.authenticate("jwt", { session: false }), (req, res) => {
 	Code.findOne({ email: req.user.username }, (err, code) => {
 		console.log(err);
+		console.log(code);
 		console.log(req.user);
 
 		// send a new code if code has expired
-		if (err.msg === "we ain't got that code anymore") {
+		if (code === null) {
+			console.log("code is null");
 			const secret = uuidv4();
 
 			const code = new Code({
@@ -27,6 +31,8 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 
 				mail(req.user.username, secret, doc._id);
 			});
+		} else {
+			mail(req.user.username, code.code, code._id);
 		}
 	});
 });

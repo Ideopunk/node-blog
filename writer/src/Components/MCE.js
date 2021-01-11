@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
-const MCE = ({ name, id, token, updateID, setUpdateID }) => {
+const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
 	const [content, setContent] = useState("");
 	const [title, setTitle] = useState("");
 	const [publish, setPublish] = useState(false);
@@ -23,26 +23,6 @@ const MCE = ({ name, id, token, updateID, setUpdateID }) => {
 		}
 	}, [updateID]);
 
-	// useEffect(() => {
-	// 	function storageUpdate() {
-	// 		console.log('it happen')
-	// 		localStorage.setItem("content", content);
-	// 		localStorage.setItem("title", title);
-	// 		localStorage.setItem("publish", publish);
-	// 	}
-
-	// 	let intervaler;
-
-	// 	if (!updateID) {
-	// 		console.log('okay')
-	// 		intervaler = setInterval(storageUpdate, 5000);
-	// 	} else {
-	// 		console.log(updateID)
-	// 	}
-
-	// 	return clearInterval(intervaler);
-	// }, [updateID, content, title, publish]);
-
 	const handleEditorChange = (newContent, editor) => {
 		console.log("Content was updated:", newContent);
 		setContent(newContent);
@@ -56,42 +36,50 @@ const MCE = ({ name, id, token, updateID, setUpdateID }) => {
 		e.preventDefault();
 		if (name) {
 			console.log(content);
-			if (updateID) {
-				console.log("update");
-				axios
-					.put(`posts/${updateID}`, {
-						user: id,
-						title: title,
-						content: content,
-						published: publish,
-					})
-					.then((response) => {
-						console.log(response);
-						if (response.status === 200) {
-							setUpdateID("");
-							setTitle("");
-							setContent("");
-							setPublish(false);
-						}
-					})
-					.catch((err) => console.log(err));
+
+			if (verification) {
+				// updating
+				if (updateID) {
+					console.log("update");
+					axios
+						.put(`posts/${updateID}`, {
+							user: id,
+							title: title,
+							content: content,
+							published: publish,
+						})
+						.then((response) => {
+							console.log(response);
+							if (response.status === 200) {
+								setUpdateID("");
+								setTitle("");
+								setContent("");
+								setPublish(false);
+							}
+						})
+						.catch((err) => console.log(err));
+
+					// posting
+				} else {
+					axios
+						.post("/posts", {
+							user: id,
+							title: title,
+							content: content,
+							published: publish,
+						})
+						.then((response) => {
+							console.log(response);
+							if (response.status === 200) {
+								setTitle("");
+								setContent("");
+								setPublish(false);
+							}
+						})
+						.catch((err) => console.log(err));
+				}
 			} else {
-				axios
-					.post("/posts", {
-						user: id,
-						title: title,
-						content: content,
-						published: publish,
-					})
-					.then((response) => {
-						console.log(response);
-						if (response.status === 200) {
-							setTitle("");
-							setContent("");
-							setPublish(false);
-						}
-					})
-					.catch((err) => console.log(err));
+				alert("You must be verified in order to post!")
 			}
 		} else {
 			alert("You must be signed in in order to post!");
@@ -142,6 +130,7 @@ const MCE = ({ name, id, token, updateID, setUpdateID }) => {
 				className="btn"
 				value={!publish ? "Save" : updateID ? "Update" : "Post"}
 			/>
+
 		</form>
 	);
 };

@@ -13,6 +13,7 @@ const App = () => {
 	const [name, setName] = useState("");
 	const [id, setID] = useState("");
 	const [posts, setPosts] = useState([]);
+	const [verification, setVerification] = useState(false);
 	const [token, setToken] = useState(localStorage.getItem("myToken"));
 	const [updateID, setUpdateID] = useState("");
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
@@ -33,13 +34,24 @@ const App = () => {
 				setName(response.data.name);
 				setID(response.data.id);
 				setPosts(response.data.posts);
+				setVerification(response.data.status === "verified" ? true : false);
 			})
 			.catch((err) => console.log(err));
 	}, [token]);
 
+	const verifyEmail = () => {
+		axios
+			.post(`/auth`)
+			.then((response) => {
+				console.log(response);
+				setVerification(response.data.status)
+			})
+			.catch((err) => console.log(err));
+	};
+
 	return (
 		<div className="App flex">
-			<Dashboard token={token} posts={posts} setUpdateID={setUpdateID} />
+			<Dashboard token={token} posts={posts} setUpdateID={setUpdateID} verification={verification} verifyEmail={verifyEmail}/>
 			<div className="main">
 				<p>{name ? `Hi ${name}!` : "Hi there!"}</p>
 				<p>{text}</p>
@@ -51,7 +63,14 @@ const App = () => {
 						<Login token={token} setToken={setToken} />
 					</>
 				)}
-				<MCE updateID={updateID} setUpdateID={setUpdateID} name={name} id={id} token={token} />
+				<MCE
+					updateID={updateID}
+					setUpdateID={setUpdateID}
+					name={name}
+					id={id}
+					token={token}
+					verification={verification}
+				/>
 				{updateID && <Comments postID={updateID} />}
 			</div>
 		</div>

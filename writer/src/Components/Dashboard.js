@@ -3,14 +3,12 @@ import { ReactComponent as Trash } from "../Assets/trash-outline.svg";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
-const Dashboard = ({ posts, updateID, setUpdateID, token }) => {
+const Dashboard = ({ posts, updateID, setUpdateID, token, verification, verifyEmail }) => {
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	const handleClick = (e) => {
-		// if (e.target.getAttribute("name") !== "trash") {
 		console.log("changeover");
 		setUpdateID(e.currentTarget.getAttribute("name"));
-		// }
 	};
 
 	const handleTrash = (e) => {
@@ -53,6 +51,11 @@ const Dashboard = ({ posts, updateID, setUpdateID, token }) => {
 				New Post
 			</li>
 			{postsJSX}
+			{!verification && (
+				<li className="post-link" onClick={verifyEmail}>
+					Verify email
+				</li>
+			)}
 		</ul>
 	);
 };

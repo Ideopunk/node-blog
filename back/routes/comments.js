@@ -45,19 +45,23 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 			return res.status(400).json({ errors: errors.array() });
 		}
 
-		const comment = new Comment({
-			post: req.params.postId,
-			text: req.body.text,
-			user: req.user._id,
-		});
+		if (req.user.status === "verified") {
+			const comment = new Comment({
+				post: req.params.postId,
+				text: req.body.text,
+				user: req.user._id,
+			});
 
-		console.log(comment);
-		comment.save((err) => {
-			if (err) {
-				return next(err);
-			}
-			res.redirect(`/posts/${req.params.postId}`);
-		});
+			console.log(comment);
+			comment.save((err) => {
+				if (err) {
+					return next(err);
+				}
+				res.redirect(`/posts/${req.params.postId}`);
+			});
+		} else {
+			return res.json({message: "user is not verified"})
+		}
 	},
 ]);
 

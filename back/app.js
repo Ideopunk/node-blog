@@ -15,7 +15,11 @@ const auth = require("./routes/auth");
 var app = express();
 
 //datebase
-mongoose.connect(process.env.MONGURL, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(process.env.MONGURL, {
+	useUnifiedTopology: true,
+	useNewUrlParser: true,
+	useCreateIndex: true,
+});
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 
