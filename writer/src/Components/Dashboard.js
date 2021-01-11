@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { ReactComponent as Trash } from "../Assets/trash-outline.svg";
 import axios from "axios";
+import CodeScreen from "./CodeScreen";
 axios.defaults.baseURL = "http://localhost:8080";
 
 const Dashboard = ({ posts, updateID, setUpdateID, token, verification, verifyEmail }) => {
+	const [codeScreen, setCodeScreen] = useState(false);
+
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	const handleClick = (e) => {
@@ -52,10 +55,17 @@ const Dashboard = ({ posts, updateID, setUpdateID, token, verification, verifyEm
 			</li>
 			{postsJSX}
 			{!verification && (
-				<li className="post-link" onClick={verifyEmail}>
-					Verify email
-				</li>
+				<>
+					<li className="post-link" onClick={verifyEmail}>
+						Resend email
+					</li>
+					<li className="post-link" onClick={() => setCodeScreen(!codeScreen)}>
+						Verify code
+					</li>
+				</>
 			)}
+
+			{codeScreen && <CodeScreen token={token} />}
 		</ul>
 	);
 };

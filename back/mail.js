@@ -9,15 +9,8 @@ const mail = (receiver, secret, id) => {
 		logger: true,
 		debug: true,
 		auth: { user: "ideopunk@mail.com", pass: process.env.PASS },
-		// tls: {
-		// 	rejectUnauthorized: false,
-		// 	ignoreTLS: false,
-		// 	requireTLS: true,
-		// 	minVersion: "TLSv1",
-		// },
 	});
 
-	console.log("transporter created");
 	let message = {
 		from: "ideopunk@mail.com",
 		to: receiver,
@@ -28,15 +21,11 @@ const mail = (receiver, secret, id) => {
                 <p>${secret}</p>`,
 	};
 
-	console.log("message created");
-
 	transporter.sendMail(message, (err, info) => {
 		if (err) {
-			console.log("err");
 			console.error;
 		} else {
 			console.log("mail sent" + info.response);
-			res.json("success");
 		}
 	});
 };

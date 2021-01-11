@@ -79,7 +79,7 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
 						.catch((err) => console.log(err));
 				}
 			} else {
-				alert("You must be verified in order to post!")
+				alert("You must be verified in order to post!");
 			}
 		} else {
 			alert("You must be signed in in order to post!");
@@ -130,7 +130,6 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
 				className="btn"
 				value={!publish ? "Save" : updateID ? "Update" : "Post"}
 			/>
-
 		</form>
 	);
 };

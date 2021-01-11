@@ -10,6 +10,7 @@ require("../mail");
 
 // send a new code
 router.post("/", passport.authenticate("jwt", { session: false }), (req, res) => {
+	console.log("this one sure works");
 	Code.findOne({ email: req.user.username }, (err, code) => {
 		console.log(err);
 		console.log(code);
@@ -38,26 +39,30 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 });
 
 // verify code
-router.get("/:id/:secret", (req, res) => {
-	User.findById(req.params.id, (err, user) => {
-		if (err) {
-			return next(err);
-		}
-
-		Code.findOne({ email: user.username }, (err, code) => {
-			if (err) {
-				return next(err);
-			}
-			if (req.params.secret === code.code) {
-				User.update({ _id: req.params.id }, { status: "verified" }, (err) => {
-					if (err) {
-						return next(err);
-					}
-					res.redirect("/");
-				});
-			}
-		});
-	});
+router.post("/secret", passport.authenticate("jwt", { session: false }), (req, res) => {
+	console.log(req.user);
 });
+
+// router.post("/secret", passport.authenticate("jwt", { session: false }), (req, res) => {
+// 	console.log(req.user);
+// 	if (err) {
+// 		console.log(err);
+// 		return next(err);
+// 	}
+
+// 	Code.findOne({ email: req.user.username }, (err, code) => {
+// 		if (err) {
+// 			return next(err);
+// 		}
+// 		if (req.body.secret === code.code) {
+// 			User.updateOne({ _id: req.user._id }, { status: "verified" }, (err) => {
+// 				if (err) {
+// 					return next(err);
+// 				}
+// 				res.json("success");
+// 			});
+// 		}
+// 	});
+// });
 
 module.exports = router;
