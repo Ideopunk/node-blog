@@ -41,6 +41,12 @@ const App = () => {
 		}
 	}, [token]);
 
+	const refreshPosts = () => {
+		axios.get("/user").then((response) => {
+			setPosts(response.data.posts);
+		});
+	};
+
 	// expire messages
 	useEffect(() => {
 		if (message) {
@@ -65,7 +71,7 @@ const App = () => {
 	};
 
 	const signOut = () => {
-		setUpdateID("")
+		setUpdateID("");
 		localStorage.setItem("myToken", "");
 		setToken("");
 	};
@@ -81,6 +87,8 @@ const App = () => {
 				verifyEmail={verifyEmail}
 				signOut={signOut}
 				name={name}
+				refreshPosts={refreshPosts}
+				setMessage={setMessage}
 			/>
 			<div className="main">
 				<MCE
@@ -91,6 +99,7 @@ const App = () => {
 					token={token}
 					verification={verification}
 					setMessage={setMessage}
+					refreshPosts={refreshPosts}
 				/>
 			</div>
 			{updateID && <Comments postID={updateID} token={token} />}

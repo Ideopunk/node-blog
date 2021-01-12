@@ -5,7 +5,16 @@ import { ReactComponent as LockClosed } from "../Assets/lock-closed-outline.svg"
 import { ReactComponent as LockOpened } from "../Assets/lock-open-outline.svg";
 axios.defaults.baseURL = "http://localhost:8080";
 
-const MCE = ({ name, id, token, updateID, setUpdateID, verification, setMessage }) => {
+const MCE = ({
+	name,
+	id,
+	token,
+	updateID,
+	setUpdateID,
+	verification,
+	setMessage,
+	refreshPosts,
+}) => {
 	const [content, setContent] = useState("");
 	const [title, setTitle] = useState("");
 	const [publish, setPublish] = useState(false);
@@ -59,6 +68,8 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification, setMessage 
 									setTitle("");
 									setContent("");
 									setPublish(false);
+									setMessage("Your post has been updated!");
+									refreshPosts();
 								}
 							})
 							.catch((err) => console.log(err));
@@ -75,9 +86,15 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification, setMessage 
 							.then((response) => {
 								console.log(response);
 								if (response.status === 200) {
+									if (publish) {
+										setMessage("Your post has been published!");
+									} else {
+										setMessage("Your post has been saved!");
+									}
 									setTitle("");
 									setContent("");
 									setPublish(false);
+									refreshPosts();
 								}
 							})
 							.catch((err) => console.log(err));
@@ -89,7 +106,7 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification, setMessage 
 				setMessage("Sign in to post!");
 			}
 		} else {
-			setMessage("Write something!")
+			setMessage("Write something!");
 		}
 	};
 

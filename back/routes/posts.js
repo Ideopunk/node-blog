@@ -149,7 +149,7 @@ router.delete("/:postID", passport.authenticate("jwt", { session: false }), (req
 						Post.findByIdAndDelete(req.params.postID).exec(callback);
 					},
 					b: (callback) => {
-						Comment.find({ post: req.params.postID }).exec(callback);
+						Comment.remove({ post: req.params.postID }).exec(callback);
 					},
 				},
 				function (err, results) {
@@ -163,5 +163,40 @@ router.delete("/:postID", passport.authenticate("jwt", { session: false }), (req
 		}
 	});
 });
+
+// publish post
+
+router.post(
+	`/:postID/publish`,
+	passport.authenticate("jwt", { session: false }),
+	(req, res, next) => {
+		Post.findById(req.params.postID).then((results, err) => {
+			if (err) {
+				return next(err);
+			}
+
+			if (
+				req.user._id.toString() === results.user.toString() &&
+				req.user.status === "verified"
+			) {
+				const post = new Post({
+					title: results.title,
+					text: results.text,
+					user: req.user._id,
+					published: !results.published,
+					_id: req.params.postID,
+				});
+
+				Post.findByIdAndUpdate(req.params.postID, post, {}, (err, thepost) => {
+					if (err) {
+						return next(err);
+					}
+
+					res.json("Success");
+				});
+			}
+		});
+	}
+);
 
 module.exports = router;

@@ -18,6 +18,8 @@ const Dashboard = ({
 	verifyEmail,
 	signOut,
 	name,
+	refreshPosts,
+	setMessage
 }) => {
 	const [codeScreen, setCodeScreen] = useState(false);
 	const [menu, setMenu] = useState("");
@@ -29,8 +31,26 @@ const Dashboard = ({
 	}, [token]);
 
 	const handleClick = (e) => {
-		console.log("changeover");
 		setUpdateID(e.currentTarget.getAttribute("name"));
+	};
+
+	const handlePublish = (e) => {
+		e.stopPropagation();
+		console.log(e.target);
+		const status = e.currentTarget.getAttribute('data-status')
+		axios
+			.post(`/posts/${e.currentTarget.getAttribute("data-id")}/publish`)
+			.then((response) => {
+				console.log(response);
+				refreshPosts();
+				if (status === "false") {
+					setMessage("Your post has been published!")
+
+				} else {
+					setMessage("Your post has been hidden!")
+				}
+			})
+			.catch((err) => console.log(err));
 	};
 
 	const handleTrash = (e) => {
@@ -40,6 +60,8 @@ const Dashboard = ({
 			.delete(`/posts/${e.currentTarget.getAttribute("data-id")}`)
 			.then((response) => {
 				console.log(response);
+				refreshPosts();
+				setMessage("Your pust has been deleted!")
 			})
 			.catch((err) => console.log(err));
 	};
@@ -58,7 +80,14 @@ const Dashboard = ({
 				<time>{post.create_date_formatted_short}</time>
 			</div>
 			<div className="right">
-				<div className="dash-icon icon-container">{post.published ? <LockOpened /> : <LockClosed />}</div>
+				<div
+					className="dash-icon icon-container"
+					onClick={handlePublish}
+					data-id={post._id}
+					data-status={post.published}
+				>
+					{post.published ? <LockOpened /> : <LockClosed />}
+				</div>
 				<div className="dash-icon icon-container">
 					<Trash name="trash" data-id={post._id} onClick={handleTrash} />
 				</div>
