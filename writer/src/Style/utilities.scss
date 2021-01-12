@@ -1,0 +1,37 @@
+
+.flex {
+	display: flex;
+}
+
+.mrg {
+	margin: 1rem;
+}
+
+.mrg-top {
+	margin-top: 1rem;
+}
+
+.straight {
+	align-items: center;
+}
+
+.center {
+	text-align: center;
+	align-self: center;
+}
+
+.around {
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+.bor-bot {
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+.bor-top {
+	padding-top: 0.5rem;
+	border-top: 1px solid rgb(0, 0, 0);
+}

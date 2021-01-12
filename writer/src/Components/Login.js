@@ -40,7 +40,7 @@ const Login = ({ token, setToken, setMenu }) => {
 		<div className="cover" name="cover" onClick={handleClick}>
 			<form onSubmit={handleLogin} className="auth-form">
 				<label>
-					Email
+					<p className="center">Email</p>
 					<input
 						name="email"
 						required
@@ -51,7 +51,7 @@ const Login = ({ token, setToken, setMenu }) => {
 				</label>
 
 				<label>
-					Password
+					<p className="center"> Password</p>
 					<input
 						type="password"
 						name="password"
@@ -61,7 +61,7 @@ const Login = ({ token, setToken, setMenu }) => {
 						autoComplete="current-password"
 					/>
 				</label>
-				<input type="submit" value="Log in" />
+				<input type="submit" value="LOG IN" className="mrg-top"/>
 			</form>
 		</div>
 	);

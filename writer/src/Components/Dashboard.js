@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as Trash } from "../Assets/trash-outline.svg";
 import { ReactComponent as LockClosed } from "../Assets/lock-closed-outline.svg";
 import { ReactComponent as LockOpened } from "../Assets/lock-open-outline.svg";
@@ -23,6 +23,10 @@ const Dashboard = ({
 	const [menu, setMenu] = useState("");
 
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
+
+	useEffect(() => {
+		setMenu("");
+	}, [token]);
 
 	const handleClick = (e) => {
 		console.log("changeover");

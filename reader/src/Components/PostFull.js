@@ -50,7 +50,7 @@ const PostFull = ({ postID, setDisplay, token }) => {
 	const commentDisplay = (array) => {
 		console.log(array);
 		return array.map((comment) => (
-			<div key={`${comment.user.name}${comment.create_date_formatted}`} className="pad comment">
+			<div key={`${comment.user.name}${comment.create_date_formatted}`} className="pad mrg-top comment">
 				<p>{comment.user.name}</p>
 				<time className="pad-bot">{comment.create_date_formatted}</time>
 				<p>{comment.text}</p>
@@ -71,7 +71,7 @@ const PostFull = ({ postID, setDisplay, token }) => {
 					<time>Posted {created}</time>
 					{updated !== created && <time>Updated {updated}</time>}
 				</div>
-				<div className="mrg-top pad-big">
+				<div className="mrg-top pad-big pad-top">
 					<h3 className="pad-bot">Comments</h3>
 					{commentDisplay(comments)}
 				</div>

@@ -68,21 +68,26 @@ router.post("/", passport.authenticate("jwt", { session: false }), [
 
 // DESTROY comment.
 router.delete("/:commentId", passport.authenticate("jwt", { session: false }), (req, res) => {
-	Comment.findById(req.params.commentId).then((results, err) => {
-		if (err) {
-			return next(err);
-		}
+	Comment.findById(req.params.commentId)
+		.populate("post")
+		.then((results, err) => {
+			if (err) {
+				return next(err);
+			}
 
-		if (req.user._id.toString() === results.user.toString()) {
-			Comment.findByIdAndDelete(req.params.postID, (err) => {
-				if (err) {
-					return next(err);
-				}
+			if (
+				req.user._id.toString() === results.user.toString() ||
+				req.user._id.toString() === results.post.user.toString()
+			) {
+				Comment.findByIdAndDelete(req.params.commentId, (err) => {
+					if (err) {
+						return next(err);
+					}
 
-				res.json("succesful comment deletion");
-			});
-		}
-	});
+					res.json("succesful comment deletion");
+				});
+			}
+		});
 });
 
 module.exports = router;

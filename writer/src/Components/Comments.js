@@ -1,19 +1,50 @@
 import React, { useState, useEffect } from "react";
+import { ReactComponent as Trash } from "../Assets/trash-outline.svg";
+
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
-const Comments = ({ postID }) => {
+const Comments = ({ postID, token }) => {
 	const [comments, setComments] = useState([]);
+
 	useEffect(() => {
-		axios
-			.get(`/posts/${postID}/comments`)
-			.then((response) => {
-				setComments(response.data);
-			})
-			.catch((err) => console.log(err));
+		const deleteComment = (id) => {
+			axios.delete(`/posts/${postID}/comments/${id}`);
+			populate();
+		};
+
+		const populate = () => {
+			axios
+				.get(`/posts/${postID}/comments`)
+				.then((response) => {
+					const jsxData = response.data.map((comment) => (
+						<div key={comment._id} className="comment mrg">
+							<div className="comment-top">
+								<div>
+									<h3>{comment.user.name}</h3>
+									<time>{comment.create_date_formatted}</time>
+								</div>
+								<div onClick={() => deleteComment(comment._id)} className="trash">
+									<Trash />
+								</div>
+							</div>
+							<p className="mrg-top">{comment.text}</p>
+						</div>
+					));
+					setComments(jsxData);
+				})
+				.catch((err) => console.log(err));
+		};
+
+		populate();
 	}, [postID]);
 
-	return <div className="comments">{comments}</div>;
+	return (
+		<div className="comments">
+			<h2>Comments</h2>
+			{comments}
+		</div>
+	);
 };
 
 export default Comments;

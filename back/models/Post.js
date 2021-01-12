@@ -6,8 +6,8 @@ const { JSDOM } = require("jsdom");
 const PostSchema = new Schema(
 	{
 		user: { type: Schema.Types.ObjectId, ref: "User" },
-		title: { type: String, required: true, maxlength=70 },
-		text: { type: String, required: true, maxlength=100000 },
+		title: { type: String, required: true, maxlength: 70 },
+		text: { type: String, required: true, maxlength: 100000 },
 		published: { type: Boolean, default: false },
 	},
 	{ timestamps: true }

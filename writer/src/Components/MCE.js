@@ -5,11 +5,10 @@ import { ReactComponent as LockClosed } from "../Assets/lock-closed-outline.svg"
 import { ReactComponent as LockOpened } from "../Assets/lock-open-outline.svg";
 axios.defaults.baseURL = "http://localhost:8080";
 
-const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
+const MCE = ({ name, id, token, updateID, setUpdateID, verification, setMessage }) => {
 	const [content, setContent] = useState("");
 	const [title, setTitle] = useState("");
 	const [publish, setPublish] = useState(false);
-	const [message, setMessage] = useState("");
 
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
@@ -27,14 +26,6 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
 		}
 	}, [updateID]);
 
-	useEffect(() => {
-		if (message) {
-			setTimeout(() => {
-				setMessage("");
-			}, 1500);
-		}
-	}, [message]);
-
 	const handleEditorChange = (newContent, editor) => {
 		console.log("Content was updated:", newContent);
 		setContent(newContent);
@@ -46,55 +37,59 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (token) {
-			console.log(content);
+		if (content) {
+			if (token) {
+				console.log(content);
 
-			if (verification) {
-				// updating
-				if (updateID) {
-					console.log("update");
-					axios
-						.put(`posts/${updateID}`, {
-							user: id,
-							title: title,
-							content: content,
-							published: publish,
-						})
-						.then((response) => {
-							console.log(response);
-							if (response.status === 200) {
-								setUpdateID("");
-								setTitle("");
-								setContent("");
-								setPublish(false);
-							}
-						})
-						.catch((err) => console.log(err));
+				if (verification) {
+					// updating
+					if (updateID) {
+						console.log("update");
+						axios
+							.put(`posts/${updateID}`, {
+								user: id,
+								title: title,
+								content: content,
+								published: publish,
+							})
+							.then((response) => {
+								console.log(response);
+								if (response.status === 200) {
+									setUpdateID("");
+									setTitle("");
+									setContent("");
+									setPublish(false);
+								}
+							})
+							.catch((err) => console.log(err));
 
-					// posting
+						// posting
+					} else {
+						axios
+							.post("/posts", {
+								user: id,
+								title: title,
+								content: content,
+								published: publish,
+							})
+							.then((response) => {
+								console.log(response);
+								if (response.status === 200) {
+									setTitle("");
+									setContent("");
+									setPublish(false);
+								}
+							})
+							.catch((err) => console.log(err));
+					}
 				} else {
-					axios
-						.post("/posts", {
-							user: id,
-							title: title,
-							content: content,
-							published: publish,
-						})
-						.then((response) => {
-							console.log(response);
-							if (response.status === 200) {
-								setTitle("");
-								setContent("");
-								setPublish(false);
-							}
-						})
-						.catch((err) => console.log(err));
+					setMessage("You must be verified to post!");
 				}
 			} else {
-				setMessage("You must be verified to post!");
+				setMessage("Sign in to post!");
 			}
 		} else {
-			setMessage("Sign in to post!");
+			setMessage("Write something!")
 		}
 	};
 
@@ -131,21 +126,22 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
 				onEditorChange={handleEditorChange}
 			/>
 
-			<div onClick={() => setPublish(!publish)}>
-				{publish ? <LockOpened /> : <LockClosed />}
+			<div className="save-div">
+				<div onClick={() => setPublish(!publish)} className="lock-div">
+					{publish ? <LockOpened /> : <LockClosed />}
+				</div>
+				<input
+					type="submit"
+					className="submit-button"
+					value={
+						!publish
+							? "Save a private version"
+							: updateID
+							? "Update your post"
+							: "Post to public"
+					}
+				/>
 			</div>
-			<input
-				type="submit"
-				className="btn"
-				value={
-					!publish
-						? "Save a private version"
-						: updateID
-						? "Update your post"
-						: "Post to public"
-				}
-			/>
-			{message}
 		</form>
 	);
 };

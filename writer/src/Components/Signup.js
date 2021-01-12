@@ -47,11 +47,11 @@ const Signup = ({ setMenu }) => {
 		<div className="cover" name="cover" onClick={handleClick}>
 			<form onSubmit={handleSignUp} className="auth-form">
 				<label>
-					Name
+					<p className="center">Name</p>
 					<input name="name" required onChange={handleName} />
 				</label>
 				<label>
-					Email
+					<p className="center">Email</p>
 					<input
 						name="email"
 						required
@@ -62,7 +62,7 @@ const Signup = ({ setMenu }) => {
 				</label>
 
 				<label>
-					Password
+					<p className="center">Password</p>
 					<input
 						type="password"
 						name="password"
@@ -74,7 +74,7 @@ const Signup = ({ setMenu }) => {
 				</label>
 
 				<label>
-					Confirm Password
+					<p className="center">Confirm Password</p>
 					<input
 						type="password"
 						name="confirm"
@@ -85,7 +85,7 @@ const Signup = ({ setMenu }) => {
 					/>
 				</label>
 
-				<input type="submit" value="sign-up" />
+				<input type="submit" value="SIGN UP" className="mrg-top" />
 			</form>
 		</div>
 	);

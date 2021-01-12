@@ -2,8 +2,7 @@ import "./Style/App.scss";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import MCE from "./Components/MCE";
-import Login from "./Components/Login";
-import Signup from "./Components/Signup";
+import Message from "./Components/Message";
 import Dashboard from "./Components/Dashboard";
 import Comments from "./Components/Comments";
 axios.defaults.baseURL = "http://localhost:8080";
@@ -15,6 +14,8 @@ const App = () => {
 	const [verification, setVerification] = useState(false);
 	const [token, setToken] = useState(localStorage.getItem("myToken"));
 	const [updateID, setUpdateID] = useState("");
+	const [message, setMessage] = useState("");
+
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	// protected
@@ -39,6 +40,15 @@ const App = () => {
 			setVerification(false);
 		}
 	}, [token]);
+
+	// expire messages
+	useEffect(() => {
+		if (message) {
+			setTimeout(() => {
+				setMessage("");
+			}, 1500);
+		}
+	}, [message]);
 
 	const verifyEmail = () => {
 		axios
@@ -72,7 +82,6 @@ const App = () => {
 				name={name}
 			/>
 			<div className="main">
-
 				<MCE
 					updateID={updateID}
 					setUpdateID={setUpdateID}
@@ -80,9 +89,11 @@ const App = () => {
 					id={id}
 					token={token}
 					verification={verification}
+					setMessage={setMessage}
 				/>
-				{updateID && <Comments postID={updateID} />}
 			</div>
+			{updateID && <Comments postID={updateID} token={token} />}
+			{message && <Message text={message} />}
 		</div>
 	);
 };
