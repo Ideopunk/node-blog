@@ -8,9 +8,9 @@ const Selector = ({ token, setToken }) => {
 	return (
 		<div>
 			{sign ? <Login token={token} setToken={setToken} /> : <Signup />}
-			<div onClick={() => setSign(!sign)}>
+			<button onClick={() => setSign(!sign)} className="mrg-top">
 				{sign ? "Or would you prefer to sign in?" : "Or would you prefer to log in?"}
-			</div>
+			</button>
 		</div>
 	);
 };

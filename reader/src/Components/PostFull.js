@@ -48,10 +48,11 @@ const PostFull = ({ postID, setDisplay, token }) => {
 	};
 
 	const commentDisplay = (array) => {
+		console.log(array);
 		return array.map((comment) => (
-			<div>
-				<h3>{comment.user.name}</h3>
-				<time>{comment.create_date_formatted}</time>
+			<div key={`${comment.user.name}${comment.create_date_formatted}`} className="pad comment">
+				<p>{comment.user.name}</p>
+				<time className="pad-bot">{comment.create_date_formatted}</time>
 				<p>{comment.text}</p>
 			</div>
 		));
@@ -61,11 +62,24 @@ const PostFull = ({ postID, setDisplay, token }) => {
 			<div className="post-full">
 				<h2>{title}</h2>
 				<p>{name}</p>
-				<time>{created}</time>
-				{updated !== created && <time>Updated: {updated}</time>}
-				<div className="mrg-top" dangerouslySetInnerHTML={createMarkup()}></div>
-				<div>{commentDisplay(comments)}</div>
-				<Commenter postID={postID} token={token} />
+				<div
+					className="mrg-top mrg-bot pad-bot"
+					dangerouslySetInnerHTML={createMarkup()}
+				></div>
+
+				<div className="bor-bot pad-bot">
+					<time>Posted {created}</time>
+					{updated !== created && <time>Updated {updated}</time>}
+				</div>
+				<div className="mrg-top pad-big">
+					<h3 className="pad-bot">Comments</h3>
+					{commentDisplay(comments)}
+				</div>
+				{token ? (
+					<Commenter postID={postID} token={token} />
+				) : (
+					<div className="center">Please sign in in order to comment</div>
+				)}
 			</div>
 		</div>
 	);

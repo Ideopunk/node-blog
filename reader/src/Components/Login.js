@@ -33,7 +33,7 @@ const Login = ({ token, setToken }) => {
 	return (
 		<form onSubmit={handleLogin}>
 			<label>
-				Email
+				<p className="center">Email</p>
 				<input
 					name="email"
 					required
@@ -44,7 +44,7 @@ const Login = ({ token, setToken }) => {
 			</label>
 
 			<label>
-				Password
+				<p className="mrg-top  center">Password</p>
 				<input
 					type="password"
 					name="password"
@@ -52,9 +52,10 @@ const Login = ({ token, setToken }) => {
 					minLength="8"
 					onChange={handleLoginPassword}
 					autoComplete="current-password"
+					className="mrg-bot"
 				/>
 			</label>
-			<input type="submit" value="Log in" />
+			<input type="submit" value="Log in" className="mrg-top" />
 		</form>
 	);
 };

@@ -40,7 +40,7 @@ const App = () => {
 				<PostLink
 					title={post.title}
 					preview={post.preview}
-					created={post.create_date_formatted}
+					created={post.create_date_formatted_short}
 					name={post.user.name}
 					key={post.create_date_formatted + post.user.name}
 					id={post._id}
@@ -72,8 +72,19 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<p>{name}</p>
 			<div className="post-container">{posts}</div>
+
+			<aside className="sidebar">
+				{name ? (
+					<div>
+						<p className="center mrg-bot">Hi {name}!</p>
+						<button onClick={signOut} className="full">Sign Out</button>
+					</div>
+				) : (
+					<Selector token={token} setToken={setToken} />
+				)}
+			</aside>
+
 			{display && (
 				<PostFull
 					postID={display}
@@ -82,11 +93,6 @@ const App = () => {
 					verifyEmail={verifyEmail}
 					token={token}
 				/>
-			)}
-			{name ? (
-				<div onClick={signOut}>Sign Out</div>
-			) : (
-				<Selector token={token} setToken={setToken} />
 			)}
 		</div>
 	);

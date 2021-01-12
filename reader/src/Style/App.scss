@@ -1,22 +1,79 @@
 @import "reset";
 $lighttransition: all linear 0.1s;
+$testborder: 1px solid red;
+$softborder: 1px solid lightgray;
+$shadow: 1px 1px 6px grey;
 
-h1, h2 {
+body {
+	font-family: "Liberation Serif", "Nimbus Roman No 9 L", "FreeSerif", "Hoefler Text", Times,
+		"Times New Roman", serif;
+}
+
+h1,
+h2 {
 	font-size: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
 }
 
 time {
 	font-style: italic;
+	font-size: 0.825rem;
+	display: block;
+}
+
+button,
+input, textarea {
+	background-color: white;
+	border: 0;
+	border-radius: 10px;
+	box-shadow: $shadow;
+	width: 100%;
+	padding: 0;
+	height: 20px;
+	outline: none;
+	text-indent: 0.75rem;
+}
+
+input[type="submit"],
+button {
+	background-color: rgb(238, 202, 166);
 }
 
 .App {
 	padding: 2rem;
 	box-sizing: border-box;
 	height: 100vh;
-	background: linear-gradient(rgb(156, 194, 230), rgb(241, 183, 124));
+	background: linear-gradient(rgb(172, 199, 224), rgb(238, 202, 166));
+	display: flex;
+	justify-content: center;
+}
+
+.sidebar {
+	width: 200px;
+	margin-left: 1rem;
 }
 
 .post-container {
+	background-color: white;
+	width: 500px;
+	height: fit-content;
+	box-sizing: border-box;
+	padding: 0.5rem;
+	border-radius: 10px;
+	box-shadow: $shadow;
+}
+
+.post-full {
+	padding: 1rem;
+	background-color: white;
+	width: 60%;
+	max-height: 80%;
+	border-radius: 10px;
+	box-shadow: $shadow;
+	overflow-y: scroll;
 }
 
 .mrg {
@@ -27,8 +84,31 @@ time {
 	margin-top: 1rem;
 }
 
+.mrg-bot {
+	margin-bottom: 1rem;
+}
+
 .pad {
 	padding: 1rem;
+}
+
+.pad-bot {
+	padding-bottom: 1rem;
+}
+
+.pad-big {
+	padding: 2rem;
+}
+
+.comment {
+	box-shadow: $shadow;
+	border-radius: 10px;
+	width: fit-content;
+	min-width: 200px;
+}
+
+.commenter {
+	width: 300px;
 }
 
 .cover {
@@ -44,11 +124,35 @@ time {
 	z-index: 4;
 }
 
-.post-full {
-	padding: 1rem;
-	background-color: white;
-	width: 80%;
-	height: 80%;
-	border: 1px solid black;
-	border-radius: 10px;
+.flex {
+	display: flex;
+}
+
+.full {
+	width: 100%;
+}
+
+.spread {
+	justify-content: space-between;
+	align-items: center;
+}
+
+.bor-bot {
+	border-bottom: $softborder;
+}
+
+.center {
+	text-align: center;
+	align-self: center;
+}
+
+.textarea {
+	resize: none;
+	width: 100%;
+	height: 100px;
+	outline: none;
+	box-sizing: border-box;
+	padding: 0.5rem;
+	text-indent: 0;
+	background-color: rgba(172, 199, 224, 0.3);
 }

@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
@@ -41,11 +41,11 @@ const Signup = () => {
 	return (
 		<form onSubmit={handleSignUp}>
 			<label>
-				Name
+				<p className="center">Name</p>
 				<input name="name" required onChange={handleName} />
 			</label>
 			<label>
-				Email
+				<p className="mrg-top center">Email</p>
 				<input
 					name="email"
 					required
@@ -56,7 +56,7 @@ const Signup = () => {
 			</label>
 
 			<label>
-				Password
+				<p className="mrg-top center">Password</p>
 				<input
 					type="password"
 					name="password"
@@ -68,7 +68,7 @@ const Signup = () => {
 			</label>
 
 			<label>
-				Confirm Password
+			<p className="mrg-top center">Confirm password</p>
 				<input
 					type="password"
 					name="confirm"
@@ -76,10 +76,11 @@ const Signup = () => {
 					minLength="8"
 					onChange={handleConfirm}
 					autoComplete="new-password"
-				/>
+					className="mrg-bot"
+					/>
 			</label>
 
-			<input type="submit" value="sign-up" />
+			<input type="submit" value="Sign Up" className="mrg-top" />
 		</form>
 	);
 };

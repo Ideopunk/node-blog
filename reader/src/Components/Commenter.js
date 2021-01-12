@@ -19,8 +19,16 @@ const Commenter = ({ postID, token }) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<input name="text" onChange={handleChange} />
+		<form onSubmit={handleSubmit} className="pad-big commenter">
+			<textarea
+				cols="40"
+				maxLength={500}
+				rows={4}
+				name="text"
+				onChange={handleChange}
+				placeholder="Share your thoughts"
+				className="mrg-bot textarea"
+			/>
 			<input type="submit" value="Add comment" />
 		</form>
 	);
