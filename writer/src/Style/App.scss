@@ -17,6 +17,8 @@ time {
 	border: 1px solid black;
 }
 
+
+
 .flex {
 	display: flex;
 }
@@ -31,19 +33,33 @@ time {
 
 .dashboard {
 	height: 100vh;
-	background-color: grey;
-	padding: 1rem;
+	width: 200px;
+	background-color: black;
+	color: white;
+	padding: 0.5rem;
 	box-sizing: border-box;
 	white-space: nowrap;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
+
 
 .post-link {
 	display: flex;
 	box-sizing: border-box;
-	padding: 0.5rem;
-	margin: 0.5rem;
-	border: 1px solid blue;
-	border-radius: 9999px;
+	width: 95%;
+	margin-bottom: 0.5rem;
+	color: white;
+	justify-content: space-between;
+	align-items: center;
+}
+
+
+.auth-form {
+	background-color: white;
+	height: 500px;
+	display: flex;
 }
 
 .icon {
@@ -74,5 +90,49 @@ time {
 }
 
 .codescreen {
+	background-color: white;
+}
+
+.around {
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+
+
+.bor-bot {
+	padding-bottom: 0.5rem;
+	border-bottom: 1px solid white;
+}
+
+
+.bor-top {
+	padding-top: 0.5rem;
+	border-top: 1px solid white;
+}
+
+.title-label {
+	width: 100%;
+	position: relative;
+}
+
+.title-label-span {
+	position: absolute;
+	color: grey;
+	left: 0.5rem;
+	bottom: 150%;
+}
+
+.title {
+	width: 100%;
+	height: 60px;
+	font-size: 1.5rem;
+	padding-top: 1rem;
+	padding-left: 0.5rem;
+	box-sizing: border-box;
+	outline: none;
+	border: 1px solid rgb(221, 221, 221);
+	border-bottom: 0;
 	background-color: white;
 }

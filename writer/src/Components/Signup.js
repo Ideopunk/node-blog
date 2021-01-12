@@ -1,8 +1,8 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
-const Signup = () => {
+const Signup = ({ setMenu }) => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -38,49 +38,56 @@ const Signup = () => {
 			.catch((err) => console.log(err));
 	};
 
+	const handleClick = (e) => {
+		if (e.target.getAttribute("name") === "cover") {
+			setMenu("");
+		}
+	};
 	return (
-		<form onSubmit={handleSignUp}>
-			<label>
-				Name
-				<input name="name" required onChange={handleName} />
-			</label>
-			<label>
-				Email
-				<input
-					name="email"
-					required
-					type="email"
-					onChange={handleEmail}
-					autoComplete="username"
-				/>
-			</label>
+		<div className="cover" name="cover" onClick={handleClick}>
+			<form onSubmit={handleSignUp} className="auth-form">
+				<label>
+					Name
+					<input name="name" required onChange={handleName} />
+				</label>
+				<label>
+					Email
+					<input
+						name="email"
+						required
+						type="email"
+						onChange={handleEmail}
+						autoComplete="username"
+					/>
+				</label>
 
-			<label>
-				Password
-				<input
-					type="password"
-					name="password"
-					autoComplete="new-password"
-					required
-					minLength="8"
-					onChange={handlePassword}
-				/>
-			</label>
+				<label>
+					Password
+					<input
+						type="password"
+						name="password"
+						autoComplete="new-password"
+						required
+						minLength="8"
+						onChange={handlePassword}
+					/>
+				</label>
 
-			<label>
-				Confirm Password
-				<input
-					type="password"
-					name="confirm"
-					required
-					minLength="8"
-					onChange={handleConfirm}
-					autoComplete="new-password"
-				/>
-			</label>
+				<label>
+					Confirm Password
+					<input
+						type="password"
+						name="confirm"
+						required
+						minLength="8"
+						onChange={handleConfirm}
+						autoComplete="new-password"
+					/>
+				</label>
 
-			<input type="submit" value="sign-up" />
-		</form>
+				<input type="submit" value="sign-up" />
+			</form>
+		</div>
 	);
 };
 

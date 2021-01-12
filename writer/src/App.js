@@ -9,7 +9,6 @@ import Comments from "./Components/Comments";
 axios.defaults.baseURL = "http://localhost:8080";
 
 const App = () => {
-	const [text, setText] = useState("");
 	const [name, setName] = useState("");
 	const [id, setID] = useState("");
 	const [posts, setPosts] = useState([]);
@@ -17,11 +16,6 @@ const App = () => {
 	const [token, setToken] = useState(localStorage.getItem("myToken"));
 	const [updateID, setUpdateID] = useState("");
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
-
-	// trivial
-	useEffect(() => {
-		axios.get("/").then((response) => setText(response.data));
-	}, []);
 
 	// protected
 	useEffect(() => {
@@ -41,7 +35,7 @@ const App = () => {
 		} else {
 			setName("");
 			setID("");
-			setPosts("");
+			setPosts([]);
 			setVerification(false);
 		}
 	}, [token]);
@@ -69,24 +63,16 @@ const App = () => {
 		<div className="App flex">
 			<Dashboard
 				token={token}
+				setToken={setToken}
 				posts={posts}
 				setUpdateID={setUpdateID}
 				verification={verification}
 				verifyEmail={verifyEmail}
+				signOut={signOut}
+				name={name}
 			/>
 			<div className="main">
-				<p>{name ? `Hi ${name}!` : "Hi there!"}</p>
-				<p>{text}</p>
 
-				{name ? (
-					<div onClick={signOut}>Sign Out</div>
-				) : (
-					<>
-						<Signup />
-
-						<Login token={token} setToken={setToken} />
-					</>
-				)}
 				<MCE
 					updateID={updateID}
 					setUpdateID={setUpdateID}

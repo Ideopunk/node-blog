@@ -1,12 +1,16 @@
 import { Editor } from "@tinymce/tinymce-react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { ReactComponent as LockClosed } from "../Assets/lock-closed-outline.svg";
+import { ReactComponent as LockOpened } from "../Assets/lock-open-outline.svg";
 axios.defaults.baseURL = "http://localhost:8080";
 
 const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
 	const [content, setContent] = useState("");
 	const [title, setTitle] = useState("");
 	const [publish, setPublish] = useState(false);
+	const [message, setMessage] = useState("");
+
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	useEffect(() => {
@@ -23,6 +27,14 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
 		}
 	}, [updateID]);
 
+	useEffect(() => {
+		if (message) {
+			setTimeout(() => {
+				setMessage("");
+			}, 1500);
+		}
+	}, [message]);
+
 	const handleEditorChange = (newContent, editor) => {
 		console.log("Content was updated:", newContent);
 		setContent(newContent);
@@ -34,7 +46,7 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if (name) {
+		if (token) {
 			console.log(content);
 
 			if (verification) {
@@ -79,40 +91,34 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
 						.catch((err) => console.log(err));
 				}
 			} else {
-				alert("You must be verified in order to post!");
+				setMessage("You must be verified to post!");
 			}
 		} else {
-			alert("You must be signed in in order to post!");
+			setMessage("Sign in to post!");
 		}
 	};
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<div className="flex straight mrg">
+			<label className="title-label">
+				<span className="title-label-span">Title</span>
 				<input
+					className="title"
 					name="title"
-					placeholder="Title"
 					onChange={handleTitleChange}
 					value={title}
+					maxLength={70}
+					required
 				/>
-				<div class="switch-container">
-					Save draft
-					<label class="switch">
-						<input
-							type="checkbox"
-							checked={publish}
-							onChange={() => setPublish(!publish)}
-						/>{" "}
-						<div></div>
-					</label>
-				</div>
-			</div>
+			</label>
 
 			<Editor
 				apiKey="bq2z3nnsyx6agpruod00p08tfiqb8jcv23htolhuud8bnu0z"
 				value={content}
+				required
 				init={{
 					height: 500,
+					max_height: 500,
 					menubar: false,
 					plugins: [
 						"advlist autolink lists link image charmap print preview anchor",
@@ -125,11 +131,21 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification }) => {
 				onEditorChange={handleEditorChange}
 			/>
 
+			<div onClick={() => setPublish(!publish)}>
+				{publish ? <LockOpened /> : <LockClosed />}
+			</div>
 			<input
 				type="submit"
 				className="btn"
-				value={!publish ? "Save" : updateID ? "Update" : "Post"}
+				value={
+					!publish
+						? "Save a private version"
+						: updateID
+						? "Update your post"
+						: "Post to public"
+				}
 			/>
+			{message}
 		</form>
 	);
 };

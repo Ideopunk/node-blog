@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
-const Login = ({ token, setToken }) => {
+const Login = ({ token, setToken, setMenu }) => {
 	const [loginEmail, setLoginEmail] = useState("");
 	const [loginPassword, setLoginPassword] = useState("");
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
@@ -30,32 +30,40 @@ const Login = ({ token, setToken }) => {
 			.catch((err) => console.log(err));
 	};
 
-	return (
-		<form onSubmit={handleLogin}>
-			<label>
-				Email
-				<input
-					name="email"
-					required
-					type="email"
-					onChange={handleLoginEmail}
-					autoComplete="username"
-				/>
-			</label>
+	const handleClick = (e) => {
+		if (e.target.getAttribute("name") === "cover") {
+			setMenu("");
+		}
+	};
 
-			<label>
-				Password
-				<input
-					type="password"
-					name="password"
-					required
-					minLength="8"
-					onChange={handleLoginPassword}
-					autoComplete="current-password"
-				/>
-			</label>
-			<input type="submit" value="Log in" />
-		</form>
+	return (
+		<div className="cover" name="cover" onClick={handleClick}>
+			<form onSubmit={handleLogin} className="auth-form">
+				<label>
+					Email
+					<input
+						name="email"
+						required
+						type="email"
+						onChange={handleLoginEmail}
+						autoComplete="username"
+					/>
+				</label>
+
+				<label>
+					Password
+					<input
+						type="password"
+						name="password"
+						required
+						minLength="8"
+						onChange={handleLoginPassword}
+						autoComplete="current-password"
+					/>
+				</label>
+				<input type="submit" value="Log in" />
+			</form>
+		</div>
 	);
 };
 
