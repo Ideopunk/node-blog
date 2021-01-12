@@ -2,8 +2,7 @@ import "./Style/App.scss";
 import React, { useEffect, useState } from "react";
 import PostLink from "./Components/PostLink";
 import PostFull from "./Components/PostFull";
-import Signup from "./Components/Signup";
-import Login from "./Components/Login";
+import Selector from "./Components/Selector";
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost:8080";
 
@@ -17,16 +16,21 @@ const App = () => {
 
 	// protected
 	useEffect(() => {
-		console.log(token);
-		axios
-			.get("/user")
-			.then((response) => {
-				console.log("profile");
-				console.log(response);
-				setName(response.data.name);
-				setVerification(response.data.status === "verified" ? true : false);
-			})
-			.catch((err) => console.log(err));
+		if (token) {
+			console.log(token);
+			axios
+				.get("/user")
+				.then((response) => {
+					console.log("profile");
+					console.log(response);
+					setName(response.data.name);
+					setVerification(response.data.status === "verified" ? true : false);
+				})
+				.catch((err) => console.log(err));
+		} else {
+			setName("");
+			setVerification(false);
+		}
 	}, [token]);
 
 	useEffect(() => {
@@ -61,6 +65,11 @@ const App = () => {
 			.catch((err) => console.log(err));
 	};
 
+	const signOut = () => {
+		localStorage.setItem("myToken", "");
+		setToken("");
+	};
+
 	return (
 		<div className="App">
 			<p>{name}</p>
@@ -74,12 +83,10 @@ const App = () => {
 					token={token}
 				/>
 			)}
-			{!name && (
-				<>
-					<Signup />
-
-					<Login token={token} setToken={setToken} />
-				</>
+			{name ? (
+				<div onClick={signOut}>Sign Out</div>
+			) : (
+				<Selector token={token} setToken={setToken} />
 			)}
 		</div>
 	);

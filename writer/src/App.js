@@ -25,18 +25,25 @@ const App = () => {
 
 	// protected
 	useEffect(() => {
-		console.log(token);
-		axios
-			.get("/user")
-			.then((response) => {
-				console.log("profile");
-				console.log(response);
-				setName(response.data.name);
-				setID(response.data.id);
-				setPosts(response.data.posts);
-				setVerification(response.data.status === "verified" ? true : false);
-			})
-			.catch((err) => console.log(err));
+		if (token) {
+			console.log(token);
+			axios
+				.get("/user")
+				.then((response) => {
+					console.log("profile");
+					console.log(response);
+					setName(response.data.name);
+					setID(response.data.id);
+					setPosts(response.data.posts);
+					setVerification(response.data.status === "verified" ? true : false);
+				})
+				.catch((err) => console.log(err));
+		} else {
+			setName("");
+			setID("");
+			setPosts("");
+			setVerification(false);
+		}
 	}, [token]);
 
 	const verifyEmail = () => {
@@ -53,6 +60,11 @@ const App = () => {
 			.catch((err) => console.log(err));
 	};
 
+	const signOut = () => {
+		localStorage.setItem("myToken", "");
+		setToken("");
+	};
+
 	return (
 		<div className="App flex">
 			<Dashboard
@@ -66,7 +78,9 @@ const App = () => {
 				<p>{name ? `Hi ${name}!` : "Hi there!"}</p>
 				<p>{text}</p>
 
-				{!name && (
+				{name ? (
+					<div onClick={signOut}>Sign Out</div>
+				) : (
 					<>
 						<Signup />
 
