@@ -94,7 +94,7 @@ const MCE = ({ name, id, token, updateID, setUpdateID, verification, setMessage 
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className="appear">
 			<label className="title-label">
 				<span className="title-label-span">Title</span>
 				<input

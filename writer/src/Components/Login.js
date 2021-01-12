@@ -47,6 +47,7 @@ const Login = ({ token, setToken, setMenu }) => {
 						type="email"
 						onChange={handleLoginEmail}
 						autoComplete="username"
+						className="auth-input"
 					/>
 				</label>
 
@@ -59,9 +60,10 @@ const Login = ({ token, setToken, setMenu }) => {
 						minLength="8"
 						onChange={handleLoginPassword}
 						autoComplete="current-password"
+						className="auth-input"
 					/>
 				</label>
-				<input type="submit" value="LOG IN" className="mrg-top"/>
+				<input type="submit" value="LOG IN" className="mrg-top" />
 			</form>
 		</div>
 	);

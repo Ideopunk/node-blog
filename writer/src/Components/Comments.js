@@ -21,10 +21,13 @@ const Comments = ({ postID, token }) => {
 						<div key={comment._id} className="comment mrg">
 							<div className="comment-top">
 								<div>
-									<h3>{comment.user.name}</h3>
+									<h2>{comment.user.name}</h2>
 									<time>{comment.create_date_formatted}</time>
 								</div>
-								<div onClick={() => deleteComment(comment._id)} className="trash">
+								<div
+									onClick={() => deleteComment(comment._id)}
+									className=" icon-container trash"
+								>
 									<Trash />
 								</div>
 							</div>
@@ -40,7 +43,7 @@ const Comments = ({ postID, token }) => {
 	}, [postID]);
 
 	return (
-		<div className="comments">
+		<div className="comments appear slide">
 			<h2>Comments</h2>
 			{comments}
 		</div>

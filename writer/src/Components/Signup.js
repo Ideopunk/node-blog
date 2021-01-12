@@ -48,7 +48,7 @@ const Signup = ({ setMenu }) => {
 			<form onSubmit={handleSignUp} className="auth-form">
 				<label>
 					<p className="center">Name</p>
-					<input name="name" required onChange={handleName} />
+					<input name="name" required onChange={handleName} className="auth-input" />
 				</label>
 				<label>
 					<p className="center">Email</p>
@@ -58,6 +58,7 @@ const Signup = ({ setMenu }) => {
 						type="email"
 						onChange={handleEmail}
 						autoComplete="username"
+						className="auth-input"
 					/>
 				</label>
 
@@ -70,6 +71,7 @@ const Signup = ({ setMenu }) => {
 						required
 						minLength="8"
 						onChange={handlePassword}
+						className="auth-input"
 					/>
 				</label>
 
@@ -82,6 +84,7 @@ const Signup = ({ setMenu }) => {
 						minLength="8"
 						onChange={handleConfirm}
 						autoComplete="new-password"
+						className="auth-input"
 					/>
 				</label>
 

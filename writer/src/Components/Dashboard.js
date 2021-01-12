@@ -57,9 +57,11 @@ const Dashboard = ({
 				<h2>{post.title}</h2>
 				<time>{post.create_date_formatted_short}</time>
 			</div>
-			<div className="around">
-				{post.published ? <LockOpened /> : <LockClosed />}
-				<Trash name="trash" data-id={post._id} onClick={handleTrash} />
+			<div className="right">
+				<div className="dash-icon icon-container">{post.published ? <LockOpened /> : <LockClosed />}</div>
+				<div className="dash-icon icon-container">
+					<Trash name="trash" data-id={post._id} onClick={handleTrash} />
+				</div>
 			</div>
 		</div>
 	));

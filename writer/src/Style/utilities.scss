@@ -26,6 +26,12 @@
 	justify-content: space-around;
 }
 
+.right {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+}
+
 .bor-bot {
 	padding-bottom: 0.5rem;
 	border-bottom: 1px solid rgb(0, 0, 0);

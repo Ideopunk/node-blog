@@ -65,6 +65,7 @@ const App = () => {
 	};
 
 	const signOut = () => {
+		setUpdateID("")
 		localStorage.setItem("myToken", "");
 		setToken("");
 	};
