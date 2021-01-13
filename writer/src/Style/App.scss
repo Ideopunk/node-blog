@@ -1,10 +1,12 @@
 @import "reset";
-@import "utilities";
+
 $testborder: 1px solid red;
 $lighttransition: all linear 0.1s;
 $shadow: 1px 1px 6px grey;
 $lightanimation: appear 0.3s ease-out;
 $lightslide: slide 0.3s ease-out;
+
+@import "utilities";
 
 @keyframes appear {
 	from {

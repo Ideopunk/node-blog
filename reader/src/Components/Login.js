@@ -30,7 +30,7 @@ const Login = ({ token, setToken }) => {
 	};
 
 	return (
-		<form onSubmit={handleLogin}>
+		<form onSubmit={handleLogin} className="wrap">
 			<label>
 				<p className="center">Email</p>
 				<input

@@ -6,7 +6,7 @@ const Selector = ({ token, setToken }) => {
 	const [sign, setSign] = useState(false);
 
 	return (
-		<div>
+		<div className="wide center">
 			{sign ? <Login token={token} setToken={setToken} /> : <Signup />}
 			<button onClick={() => setSign(!sign)} className="mrg-top">
 				{sign ? "Or sign in?" : "Or log in?"}

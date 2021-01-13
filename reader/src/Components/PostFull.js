@@ -88,7 +88,7 @@ const PostFull = ({ postID, setDisplay, token }) => {
 					{token ? (
 						<Commenter postID={postID} token={token} />
 					) : (
-						<div className="center">Please sign in in order to comment</div>
+						<div className="center mrg-top">Please sign in in order to comment</div>
 					)}
 				</div>
 			</div>

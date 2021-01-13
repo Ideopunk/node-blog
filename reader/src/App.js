@@ -75,13 +75,21 @@ const App = () => {
 
 			<aside className="sidebar">
 				{token ? (
-					<div>
-						<p className="center mrg-bot">Hi {name}!</p>
-						<button onClick={signOut} className="full">Sign Out</button>
-					</div>
+					<>
+						<p className="center mrg-bot wide">Hi {name}!</p>
+						<button onClick={signOut} className="full">
+							Sign Out
+						</button>
+					</>
 				) : (
 					<Selector token={token} setToken={setToken} />
 				)}
+
+				<button className="mrg-top mrg-bot">
+					<a href="localhost:3000" target="_blank" rel="noreferrer" className="nodec">
+						Writer
+					</a>
+				</button>
 			</aside>
 
 			{display && (

@@ -109,6 +109,7 @@ const Dashboard = ({
 			</div>
 
 			<div className="bor-top">
+				<a href="localhost:8000" target="_blank" rel="noreferrer" className="post-link nodec">Reader</a>
 				{name && <div className="post-link">{name}'s posts</div>}
 				{!verification && token && (
 					<>

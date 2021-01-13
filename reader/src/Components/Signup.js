@@ -38,7 +38,7 @@ const Signup = () => {
 	};
 
 	return (
-		<form onSubmit={handleSignUp}>
+		<form onSubmit={handleSignUp} className="wrap">
 			<label>
 				<p className="center">Name</p>
 				<input name="name" required onChange={handleName} />

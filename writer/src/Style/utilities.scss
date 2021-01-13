@@ -20,6 +20,15 @@
 	align-self: center;
 }
 
+.nodec {
+	text-decoration: none;
+	transition: $lighttransition;
+}
+
+.nodec:hover {
+	text-decoration: underline;
+}
+
 .around {
 	width: 100%;
 	display: flex;
