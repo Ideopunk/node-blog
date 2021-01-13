@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ReactComponent as Trash } from "../Assets/trash-outline.svg";
 import { ReactComponent as LockClosed } from "../Assets/lock-closed-outline.svg";
 import { ReactComponent as LockOpened } from "../Assets/lock-open-outline.svg";
+import { ReactComponent as Ham } from "../Assets/menu-outline.svg";
 import axios from "./config/axios";
 import Login from "./Login";
 import Signup from "./Signup";
@@ -19,6 +20,8 @@ const Dashboard = ({
 	name,
 	refreshPosts,
 	setMessage,
+	display,
+	setDisplay
 }) => {
 	const [codeScreen, setCodeScreen] = useState(false);
 	const [menu, setMenu] = useState("");
@@ -33,6 +36,7 @@ const Dashboard = ({
 		setUpdateID(e.currentTarget.getAttribute("name"));
 	};
 
+	
 	const handlePublish = (e) => {
 		e.stopPropagation();
 		console.log(e.target);
@@ -62,6 +66,10 @@ const Dashboard = ({
 				setMessage("Your pust has been deleted!");
 			})
 			.catch((err) => console.log(err));
+	};
+
+	const handleHam = (e) => {
+		setDisplay(!display);
 	};
 
 	const postsJSX = posts.map((post) => (
@@ -94,57 +102,73 @@ const Dashboard = ({
 	));
 
 	return (
-		<div className="dashboard">
-			<div>
-				<div
-					className="post-link bor-bot"
-					key="new"
-					onClick={() => {
-						setUpdateID("");
-					}}
-				>
-					New Post
+		<div name="dashboard" className={`dashboard ${!display ? "hidden-dash" : ""}`}>
+			<div className="ham-container">
+				<div className="bor-bot mrg-bot post-link ham mobile" onClick={handleHam}>
+					<Ham />
 				</div>
-				{postsJSX}
-			</div>
-
-			<div className="bor-top">
-				<a href="localhost:8000" target="_blank" rel="noreferrer" className="post-link nodec">Reader</a>
-				{name && <div className="post-link">{name}'s posts</div>}
-				{!verification && token && (
+				{display && (
 					<>
-						<div className="post-link" onClick={verifyEmail}>
-							Resend email
+						<div
+							className="post-link bor-bot"
+							key="new"
+							onClick={() => {
+								setUpdateID("");
+							}}
+						>
+							New Post
 						</div>
-						<div className="post-link" onClick={() => setCodeScreen(!codeScreen)}>
-							Verify code
-						</div>
+						{postsJSX}
 					</>
 				)}
-				{token ? (
-					<div className="post-link" onClick={signOut}>
-						Sign out
-					</div>
-				) : (
-					<>
-						<div className="post-link" onClick={() => setMenu("signup")}>
-							Sign up
-						</div>
-
-						<div className="post-link" onClick={() => setMenu("login")}>
-							Log in
-						</div>
-					</>
-				)}
-				{codeScreen && <CodeScreen token={token} setCodeScreen={setCodeScreen} />}
-				{menu === "signup" ? (
-					<Signup setMenu={setMenu} />
-				) : menu === "login" ? (
-					<Login setMenu={setMenu} token={token} setToken={setToken} />
-				) : (
-					""
-				)}
 			</div>
+
+			{display && (
+				<div className="bor-top">
+					<a
+						href="localhost:8000"
+						target="_blank"
+						rel="noreferrer"
+						className="post-link nodec"
+					>
+						Reader
+					</a>
+					{name && <div className="post-link">{name}'s posts</div>}
+					{!verification && token && (
+						<>
+							<div className="post-link" onClick={verifyEmail}>
+								Resend email
+							</div>
+							<div className="post-link" onClick={() => setCodeScreen(!codeScreen)}>
+								Verify code
+							</div>
+						</>
+					)}
+					{token ? (
+						<div className="post-link" onClick={signOut}>
+							Sign out
+						</div>
+					) : (
+						<>
+							<div className="post-link" onClick={() => setMenu("signup")}>
+								Sign up
+							</div>
+
+							<div className="post-link" onClick={() => setMenu("login")}>
+								Log in
+							</div>
+						</>
+					)}
+					{codeScreen && <CodeScreen token={token} setCodeScreen={setCodeScreen} />}
+					{menu === "signup" ? (
+						<Signup setMenu={setMenu} />
+					) : menu === "login" ? (
+						<Login setMenu={setMenu} token={token} setToken={setToken} />
+					) : (
+						""
+					)}
+				</div>
+			)}
 		</div>
 	);
 };

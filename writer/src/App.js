@@ -14,6 +14,7 @@ const App = () => {
 	const [token, setToken] = useState(localStorage.getItem("myToken"));
 	const [updateID, setUpdateID] = useState("");
 	const [message, setMessage] = useState("");
+	const [display, setDisplay] = useState(true);
 
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
@@ -75,8 +76,21 @@ const App = () => {
 		setToken("");
 	};
 
+	const handleClick = (e) => {
+		const targ = e.target;
+
+		if (
+			targ.name !== "dashboard" &&
+			targ.parentNode.name !== "dashboard" &&
+			targ.parentNode.parentNode.name !== "dashboard" &&
+			targ.parentNode.parentNode.parentNode.name !== "dashboard"
+		) {
+			setDisplay(false);
+		}
+	};
+
 	return (
-		<div className="App flex">
+		<div className="App flex" onClick={handleClick}>
 			<Dashboard
 				token={token}
 				setToken={setToken}
@@ -88,6 +102,8 @@ const App = () => {
 				name={name}
 				refreshPosts={refreshPosts}
 				setMessage={setMessage}
+				display={display}
+				setDisplay={setDisplay}
 			/>
 			<div className="main">
 				<MCE

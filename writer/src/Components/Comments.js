@@ -44,7 +44,7 @@ const Comments = ({ postID, token }) => {
 
 	return (
 		<div className="comments appear slide">
-			<h2>Comments</h2>
+			<h2 className="mrg-bot">Comments</h2>
 			{comments}
 		</div>
 	);

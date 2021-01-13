@@ -129,6 +129,7 @@ const MCE = ({
 				required
 				init={{
 					height: 500,
+					width: 600,
 					max_height: 500,
 					menubar: false,
 					plugins: [

@@ -34,8 +34,9 @@ router.get("/:postId", function (req, res, next) {
 
 			if (!item.published) {
 				res.json("this post isn't published lmao how did you get in here!");
+			} else {
+				res.json(item);
 			}
-			res.json(item);
 		});
 });
 
