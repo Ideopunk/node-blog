@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-axios.defaults.baseURL = "http://localhost:8080";
+import axios from "./config/axios";
 
 const Commenter = ({ postID, token }) => {
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
@@ -14,12 +13,15 @@ const Commenter = ({ postID, token }) => {
 		e.preventDefault();
 		axios
 			.post(`/posts/${postID}/comments`, { text: text })
-			.then((response) => console.log(response))
+			.then((response) => {
+				console.log(response);
+				setText("");
+			})
 			.catch((err) => console.log(err));
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="pad-big commenter">
+		<form onSubmit={handleSubmit} className="pad commenter">
 			<textarea
 				cols="40"
 				maxLength={500}

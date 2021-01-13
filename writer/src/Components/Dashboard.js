@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { ReactComponent as Trash } from "../Assets/trash-outline.svg";
 import { ReactComponent as LockClosed } from "../Assets/lock-closed-outline.svg";
 import { ReactComponent as LockOpened } from "../Assets/lock-open-outline.svg";
-import axios from "axios";
+import axios from "./config/axios";
 import Login from "./Login";
 import Signup from "./Signup";
 import CodeScreen from "./CodeScreen";
-axios.defaults.baseURL = "http://localhost:8080";
 
 const Dashboard = ({
 	posts,
@@ -19,7 +18,7 @@ const Dashboard = ({
 	signOut,
 	name,
 	refreshPosts,
-	setMessage
+	setMessage,
 }) => {
 	const [codeScreen, setCodeScreen] = useState(false);
 	const [menu, setMenu] = useState("");
@@ -37,17 +36,16 @@ const Dashboard = ({
 	const handlePublish = (e) => {
 		e.stopPropagation();
 		console.log(e.target);
-		const status = e.currentTarget.getAttribute('data-status')
+		const status = e.currentTarget.getAttribute("data-status");
 		axios
 			.post(`/posts/${e.currentTarget.getAttribute("data-id")}/publish`)
 			.then((response) => {
 				console.log(response);
 				refreshPosts();
 				if (status === "false") {
-					setMessage("Your post has been published!")
-
+					setMessage("Your post has been published!");
 				} else {
-					setMessage("Your post has been hidden!")
+					setMessage("Your post has been hidden!");
 				}
 			})
 			.catch((err) => console.log(err));
@@ -61,7 +59,7 @@ const Dashboard = ({
 			.then((response) => {
 				console.log(response);
 				refreshPosts();
-				setMessage("Your pust has been deleted!")
+				setMessage("Your pust has been deleted!");
 			})
 			.catch((err) => console.log(err));
 	};

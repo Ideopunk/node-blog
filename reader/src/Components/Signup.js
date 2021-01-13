@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-axios.defaults.baseURL = "http://localhost:8080";
+import axios from "./config/axios";
 
 const Signup = () => {
 	const [name, setName] = useState("");
@@ -68,7 +67,7 @@ const Signup = () => {
 			</label>
 
 			<label>
-			<p className="mrg-top center">Confirm password</p>
+				<p className="mrg-top center">Confirm password</p>
 				<input
 					type="password"
 					name="confirm"
@@ -77,7 +76,7 @@ const Signup = () => {
 					onChange={handleConfirm}
 					autoComplete="new-password"
 					className="mrg-bot"
-					/>
+				/>
 			</label>
 
 			<input type="submit" value="Sign Up" className="mrg-top" />

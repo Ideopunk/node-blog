@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "./config/axios";
 import Commenter from "./Commenter";
-axios.defaults.baseURL = "http://localhost:8080";
 
 const PostFull = ({ postID, setDisplay, token }) => {
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
@@ -36,6 +35,13 @@ const PostFull = ({ postID, setDisplay, token }) => {
 			.catch((err) => console.log(err));
 	}, [postID]);
 
+	const getComments = () => {
+		axios
+			.get(`/posts/${postID}/comments`)
+			.then((response) => setComments(response.data))
+			.catch((err) => console.log(err));
+	};
+
 	function createMarkup() {
 		return { __html: text };
 	}
@@ -50,7 +56,10 @@ const PostFull = ({ postID, setDisplay, token }) => {
 	const commentDisplay = (array) => {
 		console.log(array);
 		return array.map((comment) => (
-			<div key={`${comment.user.name}${comment.create_date_formatted}`} className="pad mrg-top comment">
+			<div
+				key={`${comment.user.name}${comment.create_date_formatted}`}
+				className="pad mrg-top comment"
+			>
 				<p>{comment.user.name}</p>
 				<time className="pad-bot">{comment.create_date_formatted}</time>
 				<p>{comment.text}</p>
@@ -59,27 +68,29 @@ const PostFull = ({ postID, setDisplay, token }) => {
 	};
 	return (
 		<div name="cover" className="cover" onClick={handleCoverClick}>
-			<div className="post-full">
-				<h2>{title}</h2>
-				<p>{name}</p>
-				<div
-					className="mrg-top mrg-bot pad-bot"
-					dangerouslySetInnerHTML={createMarkup()}
-				></div>
+			<div className="post-full-container appear">
+				<div className="post-full">
+					<h2>{title}</h2>
+					<p>{name}</p>
+					<div
+						className="mrg-top mrg-bot pad-bot"
+						dangerouslySetInnerHTML={createMarkup()}
+					></div>
 
-				<div className="bor-bot pad-bot">
-					<time>Posted {created}</time>
-					{updated !== created && <time>Updated {updated}</time>}
+					<div className="bor-bot pad-bot">
+						<time>Posted {created}</time>
+						{updated !== created && <time>Updated {updated}</time>}
+					</div>
+					<div className="mrg-top pad pad-top">
+						<h3>Comments</h3>
+						{commentDisplay(comments)}
+					</div>
+					{token ? (
+						<Commenter postID={postID} token={token} />
+					) : (
+						<div className="center">Please sign in in order to comment</div>
+					)}
 				</div>
-				<div className="mrg-top pad-big pad-top">
-					<h3 className="pad-bot">Comments</h3>
-					{commentDisplay(comments)}
-				</div>
-				{token ? (
-					<Commenter postID={postID} token={token} />
-				) : (
-					<div className="center">Please sign in in order to comment</div>
-				)}
 			</div>
 		</div>
 	);

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-axios.defaults.baseURL = "http://localhost:8080";
+import axios from "./config/axios";
 
 const Login = ({ token, setToken, setMenu }) => {
 	const [loginEmail, setLoginEmail] = useState("");

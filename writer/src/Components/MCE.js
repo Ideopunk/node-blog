@@ -1,9 +1,8 @@
 import { Editor } from "@tinymce/tinymce-react";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "./config/axios";
 import { ReactComponent as LockClosed } from "../Assets/lock-closed-outline.svg";
 import { ReactComponent as LockOpened } from "../Assets/lock-open-outline.svg";
-axios.defaults.baseURL = "http://localhost:8080";
 
 const MCE = ({
 	name,

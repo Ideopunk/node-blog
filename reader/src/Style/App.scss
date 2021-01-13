@@ -3,6 +3,20 @@ $lighttransition: all linear 0.1s;
 $testborder: 1px solid red;
 $softborder: 1px solid lightgray;
 $shadow: 1px 1px 6px grey;
+$lightanimation: appear 0.3s ease-out;
+
+@keyframes appear {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.appear {
+	animation: $lightanimation;
+}
 
 body {
 	font-family: "Liberation Serif", "Nimbus Roman No 9 L", "FreeSerif", "Hoefler Text", Times,
@@ -64,6 +78,11 @@ textarea {
 input[type="submit"],
 button {
 	background-color: rgb(238, 202, 166);
+	transition: $lighttransition;
+}
+
+input[type="submit"]:hover, button:hover {
+	background-color: darken(rgb(238, 202, 166), 10%) ;
 }
 
 .App {
@@ -88,16 +107,29 @@ button {
 	padding: 0.5rem;
 	border-radius: 10px;
 	box-shadow: $shadow;
+	transition: $lighttransition;
+}
+
+.post-container:hover {
+	background-color: rgb(171, 222, 253);
+}
+
+.post-full-container {
+	width: 60%;
+	max-width: 800px;
+	max-height: 80%;
+	box-shadow: $shadow;
+	border-radius: 10px;
+	padding: 1rem;
+	background-color: white;
+	// overflow: hidden;
 }
 
 .post-full {
-	padding: 1rem;
-	background-color: white;
-	width: 60%;
-	max-height: 80%;
-	border-radius: 10px;
-	box-shadow: $shadow;
+	width: 100%;
+	height: 80vh;
 	overflow-y: scroll;
+	z-index: 2;
 }
 
 .mrg {
@@ -127,8 +159,6 @@ button {
 .pad-top {
 	padding-top: 1rem;
 }
-
-
 
 .comment {
 	box-shadow: $shadow;
@@ -185,4 +215,9 @@ button {
 	padding: 0.5rem;
 	text-indent: 0;
 	background-color: rgba(172, 199, 224, 0.3);
+	transition: $lighttransition;
+}
+
+.textarea:hover {
+	background-color: darken( rgba(172, 199, 224, 0.3), 8%);
 }

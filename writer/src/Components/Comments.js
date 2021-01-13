@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { ReactComponent as Trash } from "../Assets/trash-outline.svg";
-
-import axios from "axios";
-axios.defaults.baseURL = "http://localhost:8080";
+import axios from "./config/axios";
 
 const Comments = ({ postID, token }) => {
 	const [comments, setComments] = useState([]);
+
+	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	useEffect(() => {
 		const deleteComment = (id) => {

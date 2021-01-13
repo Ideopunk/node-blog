@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import PostLink from "./Components/PostLink";
 import PostFull from "./Components/PostFull";
 import Selector from "./Components/Selector";
-import axios from "axios";
-axios.defaults.baseURL = "http://localhost:8080";
+import axios from "./Components/config/axios";
 
 const App = () => {
 	const [posts, setPosts] = useState("");
@@ -75,7 +74,7 @@ const App = () => {
 			<div className="post-container">{posts}</div>
 
 			<aside className="sidebar">
-				{name ? (
+				{token ? (
 					<div>
 						<p className="center mrg-bot">Hi {name}!</p>
 						<button onClick={signOut} className="full">Sign Out</button>

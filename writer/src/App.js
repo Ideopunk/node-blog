@@ -1,11 +1,10 @@
 import "./Style/App.scss";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "./Components/config/axios";
 import MCE from "./Components/MCE";
 import Message from "./Components/Message";
 import Dashboard from "./Components/Dashboard";
 import Comments from "./Components/Comments";
-axios.defaults.baseURL = "http://localhost:8080";
 
 const App = () => {
 	const [name, setName] = useState("");
