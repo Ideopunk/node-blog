@@ -76,8 +76,9 @@ textarea {
 	transition: $lighttransition;
 }
 
-input:hover, input:focus {
-	background-color: lighten( rgb(238, 202, 166), 10%);
+input:hover,
+input:focus {
+	background-color: lighten(rgb(238, 202, 166), 10%);
 }
 
 input[type="submit"],
@@ -89,6 +90,10 @@ button {
 input[type="submit"]:hover,
 button:hover {
 	background-color: darken(rgb(238, 202, 166), 10%);
+}
+
+label {
+	width: 100%;
 }
 
 .App {
@@ -112,7 +117,6 @@ button:hover {
 		align-items: center;
 	}
 
-
 	.sidebar {
 		order: -1;
 		display: flex;
@@ -122,9 +126,9 @@ button:hover {
 		margin: 0;
 	}
 
-	// .post-container {
-	// 	width: 100%;
-	// }
+	label {
+		width: fit-content;
+	}
 }
 
 .post-container {

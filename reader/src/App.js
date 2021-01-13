@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import PostLink from "./Components/PostLink";
 import PostFull from "./Components/PostFull";
 import Selector from "./Components/Selector";
+import Verifier from "./Components/Verifier";
 import axios from "./Components/config/axios";
 
 const App = () => {
@@ -16,12 +17,9 @@ const App = () => {
 	// protected
 	useEffect(() => {
 		if (token) {
-			console.log(token);
 			axios
 				.get("/user")
 				.then((response) => {
-					console.log("profile");
-					console.log(response);
 					setName(response.data.name);
 					setVerification(response.data.status === "verified" ? true : false);
 				})
@@ -34,7 +32,6 @@ const App = () => {
 
 	useEffect(() => {
 		axios.get("/posts").then((response) => {
-			console.log(response.data);
 			const posts = response.data.map((post) => (
 				<PostLink
 					title={post.title}
@@ -54,7 +51,6 @@ const App = () => {
 		axios
 			.post(`/auth`)
 			.then((response) => {
-				console.log(response);
 				if (response.status === 404) {
 					console.log("code not found, resend code. ");
 				} else {
@@ -85,6 +81,7 @@ const App = () => {
 					<Selector token={token} setToken={setToken} />
 				)}
 
+				{token && !verification && <Verifier token={token} setVerification={setVerification}/>}
 				<button className="mrg-top mrg-bot">
 					<a href="localhost:3000" target="_blank" rel="noreferrer" className="nodec">
 						Writer

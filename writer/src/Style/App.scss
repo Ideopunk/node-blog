@@ -308,10 +308,15 @@ h2 {
 }
 
 @media (max-width: 900px) {
+	body {
+		overflow-x: hidden;
+		overflow-y: scroll;
+	}
+
 	.App {
 		flex-direction: column;
 		max-width: 100vw;
-		width: 100%
+		width: 100%;
 	}
 
 	.comments {
@@ -319,12 +324,11 @@ h2 {
 		border: 0;
 		border-top: 1px solid black;
 		min-height: 100px;
-
 	}
 
 	.comment {
 		margin: 0;
-
+		width: 90%;
 	}
 
 	.dashboard {

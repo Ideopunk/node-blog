@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "./config/axios";
 import Commenter from "./Commenter";
 
-const PostFull = ({ postID, setDisplay, token }) => {
+const PostFull = ({ postID, setDisplay, token, verification }) => {
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	const [title, setTitle] = useState("");
@@ -85,10 +85,12 @@ const PostFull = ({ postID, setDisplay, token }) => {
 						<h3>Comments</h3>
 						{commentDisplay(comments)}
 					</div>
-					{token ? (
+					{token && verification ? (
 						<Commenter postID={postID} token={token} />
-					) : (
+					) : token ? (
 						<div className="center mrg-top">Please sign in in order to comment</div>
+					) : (
+						<div className="center mrg-top">Please verify in order to comment</div>
 					)}
 				</div>
 			</div>

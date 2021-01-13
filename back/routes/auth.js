@@ -10,15 +10,9 @@ require("../mail");
 
 // send a new code
 router.post("/", passport.authenticate("jwt", { session: false }), (req, res) => {
-	console.log("this one sure works");
 	Code.findOne({ email: req.user.username }, (err, code) => {
-		console.log(err);
-		console.log(code);
-		console.log(req.user);
-
 		// send a new code if code has expired
 		if (code === null) {
-			console.log("code is null");
 			const secret = uuidv4();
 
 			const code = new Code({
@@ -26,7 +20,6 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 				code: secret,
 			}).save((err, doc) => {
 				if (err) {
-					console.log(err);
 					return next(err);
 				}
 
@@ -40,19 +33,13 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 
 // verify code
 router.post("/secret", passport.authenticate("jwt", { session: false }), (req, res, next) => {
-	console.log(req.user);
-
-	console.log("first");
-
 	Code.findOne({ email: req.user.username }, (err, code) => {
-		console.log("code find one");
 		if (err) {
 			return next(err);
 		}
 		if (code && req.body.secret === code.code) {
 			User.updateOne({ _id: req.user._id }, { status: "verified" }, (err) => {
 				if (err) {
-					console.log(err);
 					return next(err);
 				}
 				res.json("success");

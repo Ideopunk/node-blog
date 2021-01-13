@@ -31,8 +31,6 @@ PostSchema.virtual("update_date_formatted").get(function () {
 PostSchema.virtual("preview").get(function () {
 	const dom = new JSDOM(this.text);
 	const substring = dom.window.document.body.textContent.substr(0, 140).trim();
-	console.log(dom.window.document.body.textContent);
-	console.log(substring);
 	return substring + "...";
 });
 

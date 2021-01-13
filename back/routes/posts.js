@@ -48,7 +48,6 @@ router.get(
 			.populate("user", "name")
 			.exec((err, item) => {
 				if (err) {
-					console.log(err);
 					return next(err);
 				}
 
@@ -84,7 +83,6 @@ router.post("/", passport.authenticate("jwt", { session: false }), [
 				published: req.body.published,
 			});
 
-			console.log(post);
 			post.save((err) => {
 				if (err) {
 					return next(err);
@@ -106,7 +104,6 @@ router.put(
 		body("title", "Posts require titles").trim().isLength({ min: 1 }).escape(),
 		body("published", "Publication status must be specified").isBoolean(),
 		(req, res, next) => {
-			console.log(req.body);
 
 			Post.findById(req.params.postID).then((post) => {
 				// make sure this user is allowed to do this...
@@ -114,7 +111,6 @@ router.put(
 					req.user._id.toString() === post.user.toString() &&
 					req.user.status === "verified"
 				) {
-					console.log("we in");
 					const errors = validationResult(req);
 
 					if (!errors.isEmpty()) {
@@ -135,7 +131,6 @@ router.put(
 						_id: req.params.postID,
 					});
 
-					console.log(post);
 
 					Post.findByIdAndUpdate(req.params.postID, post, {}, (err, thepost) => {
 						if (err) {
@@ -156,7 +151,6 @@ router.put(
 // DESTROY post.
 router.delete("/:postID", passport.authenticate("jwt", { session: false }), (req, res) => {
 	Post.findById(req.params.postID).then((results, err) => {
-		console.log("we got in, delete");
 		if (err) {
 			return next(err);
 		}

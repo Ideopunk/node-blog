@@ -23,9 +23,9 @@ const mail = (receiver, secret, id) => {
 
 	transporter.sendMail(message, (err, info) => {
 		if (err) {
-			console.error;
+			console.log(err);
 		} else {
-			console.log("mail sent" + info.response);
+			console.log(info.response);
 		}
 	});
 };

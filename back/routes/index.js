@@ -25,29 +25,19 @@ router.get("/user", passport.authenticate("jwt", { session: false }), (req, res)
 
 /* POST login. */
 router.post("/login", function (req, res) {
-	console.log(req.body);
 	passport.authenticate("local", { session: false }, (err, user, info) => {
-		console.log("authenticate section");
 		if (err || !user) {
-			console.log("aint right");
-			console.log(err);
-			console.log(user);
-			console.log(info);
 			return res.status(400).json({
 				message: "Something is not right",
 				user: user,
 			});
 		}
 		req.login(user, { session: false }, (err) => {
-			console.log("req login");
 			if (err) {
-				console.log(err);
 				res.send(err);
 			}
 			// generate a signed json web token with the contents of user object and return it in the response
 			const token = jwt.sign(user.toJSON(), process.env.JWT_SECRET, { expiresIn: "1d" });
-			console.log(user);
-			console.log(token);
 			return res.json({ token });
 		});
 	})(req, res);
@@ -80,7 +70,6 @@ router.post(
 				password: hashedPassword,
 			}).save((err) => {
 				if (err) {
-					console.log(err);
 					return next(err);
 				}
 
@@ -93,7 +82,6 @@ router.post(
 					code: secret,
 				}).save((err, doc) => {
 					if (err) {
-						console.log(err);
 						return next(err);
 					}
 

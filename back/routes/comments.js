@@ -8,15 +8,12 @@ const Comment = require("../models/Comment");
 
 // GET all comments for post
 router.get("/", function (req, res) {
-	console.log("req.params");
-	console.log(req.params);
 	Comment.find({ post: req.params.postId })
 		.populate("user", "name")
 		.exec((err, list_comments) => {
 			if (err) {
 				return next(err);
 			}
-			console.log(list_comments);
 			res.json(list_comments);
 		});
 });
@@ -39,7 +36,6 @@ router.get("/:commentId", function (req, res) {
 router.post("/", passport.authenticate("jwt", { session: false }), [
 	body("text", "Write something!").trim().isLength({ min: 1 }).escape(),
 	(req, res, next) => {
-		console.log("we in");
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
@@ -53,7 +49,6 @@ router.post("/", passport.authenticate("jwt", { session: false }), [
 				user: req.user._id,
 			});
 
-			console.log(comment);
 			comment.save((err) => {
 				if (err) {
 					return next(err);
