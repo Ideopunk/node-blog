@@ -18,7 +18,6 @@ router.get("/", function (req, res, next) {
 			if (err) {
 				return next(err);
 			}
-			console.log(list_posts);
 			res.json(list_posts);
 		});
 });
@@ -40,7 +39,26 @@ router.get("/:postId", function (req, res, next) {
 		});
 });
 
-// GET form to create new post.
+// GET individual private post
+router.get(
+	"/:postId/private",
+	passport.authenticate("jwt", { session: false }),
+	function (req, res, next) {
+		Post.findById(req.params.postId)
+			.populate("user", "name")
+			.exec((err, item) => {
+				if (err) {
+					console.log(err);
+					return next(err);
+				}
+
+				if (req.user._id.toString() === item.user._id.toString()) {
+					res.json(item);
+				}
+			});
+	}
+);
+
 // POST form to create new post.
 router.post("/", passport.authenticate("jwt", { session: false }), [
 	body("title", "Posts require titles").trim().isLength({ min: 1 }).escape(),

@@ -80,10 +80,11 @@ const App = () => {
 		const targ = e.target;
 
 		if (
-			targ.name !== "dashboard" &&
-			targ.parentNode.name !== "dashboard" &&
-			targ.parentNode.parentNode.name !== "dashboard" &&
-			targ.parentNode.parentNode.parentNode.name !== "dashboard"
+			targ.getAttribute("name") !== "dashboard" &&
+			targ.parentNode.getAttribute("name") !== "dashboard" &&
+			targ.parentNode.parentNode.getAttribute("name") !== "dashboard" &&
+			targ.parentNode.parentNode.parentNode.getAttribute("name") !== "dashboard" &&
+			targ.parentNode.parentNode.parentNode.parentNode.getAttribute("name") !== "dashboard"
 		) {
 			setDisplay(false);
 		}
@@ -115,6 +116,7 @@ const App = () => {
 					verification={verification}
 					setMessage={setMessage}
 					refreshPosts={refreshPosts}
+					setDisplay={setDisplay}
 				/>
 			</div>
 			{updateID && <Comments postID={updateID} token={token} />}

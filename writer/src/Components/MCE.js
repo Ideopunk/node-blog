@@ -13,6 +13,7 @@ const MCE = ({
 	verification,
 	setMessage,
 	refreshPosts,
+	setDisplay,
 }) => {
 	const [content, setContent] = useState("");
 	const [title, setTitle] = useState("");
@@ -21,13 +22,20 @@ const MCE = ({
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	useEffect(() => {
+		console.log(updateID);
 		if (updateID) {
-			axios.get(`/posts/${updateID}`).then((response) => {
-				setContent(response.data.text);
-				setTitle(response.data.title);
-				setPublish(response.data.published);
-			});
+			console.log('yup, we have updateid...')
+			axios
+				.get(`/posts/${updateID}/private`)
+				.then((response) => {
+					console.log(response);
+					setContent(response.data.text || "");
+					setTitle(response.data.title || "");
+					setPublish(response.data.published);
+				})
+				.catch((err) => console.log(err));
 		} else {
+			console.log("what!");
 			setContent(localStorage.getItem("content") || "");
 			setTitle(localStorage.getItem("title") || "");
 			setPublish(localStorage.getItem("published") || false);
@@ -42,6 +50,8 @@ const MCE = ({
 	const handleTitleChange = (e) => {
 		setTitle(e.target.value);
 	};
+
+	const removeDash = () => setDisplay(false);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -141,6 +151,7 @@ const MCE = ({
 						"undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help",
 				}}
 				onEditorChange={handleEditorChange}
+				onClick={removeDash}
 			/>
 
 			<div className="save-div">
