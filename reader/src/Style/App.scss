@@ -81,10 +81,14 @@ input:focus {
 	background-color: lighten(rgb(238, 202, 166), 10%);
 }
 
+input,
+button {
+	max-width: 300px;
+}
+
 input[type="submit"],
 button {
 	background-color: rgb(238, 202, 166);
-	max-width: 300px;
 }
 
 input[type="submit"]:hover,

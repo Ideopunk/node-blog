@@ -21,7 +21,7 @@ const Dashboard = ({
 	refreshPosts,
 	setMessage,
 	display,
-	setDisplay
+	setDisplay,
 }) => {
 	const [codeScreen, setCodeScreen] = useState(false);
 	const [menu, setMenu] = useState("");
@@ -36,7 +36,6 @@ const Dashboard = ({
 		setUpdateID(e.currentTarget.getAttribute("name"));
 	};
 
-	
 	const handlePublish = (e) => {
 		e.stopPropagation();
 		console.log(e.target);
@@ -125,6 +124,8 @@ const Dashboard = ({
 
 			{display && (
 				<div className="bor-top">
+					{name && <div className="post-link">{name}'s posts</div>}
+
 					<a
 						href="localhost:8000"
 						target="_blank"
@@ -133,11 +134,10 @@ const Dashboard = ({
 					>
 						Reader
 					</a>
-					{name && <div className="post-link">{name}'s posts</div>}
 					{!verification && token && (
 						<>
 							<div className="post-link" onClick={verifyEmail}>
-								Resend email
+								Resend verification email
 							</div>
 							<div className="post-link" onClick={() => setCodeScreen(!codeScreen)}>
 								Verify code

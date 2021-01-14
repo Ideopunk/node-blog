@@ -70,9 +70,14 @@ const App = () => {
 			<div className="post-container">{posts}</div>
 
 			<aside className="sidebar">
+				<p className="center mrg-bot wide">Hi {name}!</p>
+
+				{token && !verification && (
+					<Verifier token={token} setVerification={setVerification} />
+				)}
+
 				{token ? (
 					<>
-						<p className="center mrg-bot wide">Hi {name}!</p>
 						<button onClick={signOut} className="full">
 							Sign Out
 						</button>
@@ -81,7 +86,6 @@ const App = () => {
 					<Selector token={token} setToken={setToken} />
 				)}
 
-				{token && !verification && <Verifier token={token} setVerification={setVerification}/>}
 				<button className="mrg-top mrg-bot">
 					<a href="localhost:3000" target="_blank" rel="noreferrer" className="nodec">
 						Writer

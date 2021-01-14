@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "./config/axios";
 
-const Commenter = ({ postID, token }) => {
+const Commenter = ({ postID, token, getComments }) => {
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	const [text, setText] = useState("");
@@ -16,6 +16,7 @@ const Commenter = ({ postID, token }) => {
 			.then((response) => {
 				console.log(response);
 				setText("");
+				getComments();
 			})
 			.catch((err) => console.log(err));
 	};

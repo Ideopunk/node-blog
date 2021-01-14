@@ -25,19 +25,20 @@ const Verifier = ({ token, setVerification }) => {
 	// resend verification email
 	const handleEmail = (e) => {
 		e.preventDefault();
-		axios.post(`/auth`);
+		axios
+			.post(`/auth`)
+			.then((response) => console.log(response))
+			.catch((err) => console.log(err));
 	};
 
 	return (
-		<>
-			<input value={code} onChange={handleChange} />
-			<button onClick={handleSubmit} className="mrg-bot">
-				Verify
-			</button>
+		<form className="center">
+			<input value={code} onChange={handleChange} required className="mrg-bot" />
+			<input type="submit" onClick={handleSubmit} className="mrg-bot" value="Verify code" />
 			<button onClick={handleEmail} className="mrg-bot">
 				Resend Email
 			</button>
-		</>
+		</form>
 	);
 };
 

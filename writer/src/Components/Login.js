@@ -62,7 +62,7 @@ const Login = ({ token, setToken, setMenu }) => {
 						className="auth-input"
 					/>
 				</label>
-				<input type="submit" value="LOG IN" className="mrg-top" />
+				<input type="submit" value="LOG IN" className="mrg-top submit-button rad" />
 			</form>
 		</div>
 	);

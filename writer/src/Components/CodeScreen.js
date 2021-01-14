@@ -29,12 +29,15 @@ const CodeScreen = ({ token, setCodeScreen }) => {
 
 	return (
 		<div className="cover" name="cover" onClick={handleClick}>
-			<form className="codescreen" onSubmit={handleSubmit}>
-				<label>
-					Submit code
-					<input name="code" onChange={handleChange} />
-					<input type="submit" value="Submit Code" />
-				</label>
+			<form className="message column" onSubmit={handleSubmit}>
+				<label htmlFor="code">Enter code</label>
+				<input
+					name="code"
+					id="code"
+					className="auth-input mrg-bot"
+					onChange={handleChange}
+				/>
+				<input type="submit" value="Submit Code" className="submit-button rad" />
 			</form>
 		</div>
 	);

@@ -10,6 +10,7 @@ require("../mail");
 
 // send a new code
 router.post("/", passport.authenticate("jwt", { session: false }), (req, res) => {
+	console.log("/auth");
 	Code.findOne({ email: req.user.username }, (err, code) => {
 		// send a new code if code has expired
 		if (code === null) {
@@ -23,10 +24,15 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 					return next(err);
 				}
 
-				mail(req.user.username, secret, doc._id);
+				const response = mail(req.user.username, secret, doc._id);
+				console.log("rejected: " + response.rejected);
+				res.json(response);
 			});
 		} else {
-			mail(req.user.username, code.code, code._id);
+			const response = mail(req.user.username, code.code, code._id);
+			console.log("rejected: " + response.rejected);
+
+			res.json(response);
 		}
 	});
 });

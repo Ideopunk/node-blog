@@ -17,7 +17,6 @@ const PostFull = ({ postID, setDisplay, token, verification }) => {
 		axios
 			.get(`/posts/${postID}`)
 			.then((response) => {
-				console.log(response.data);
 				setTitle(response.data.title);
 				setText(response.data.text);
 				setCreated(response.data.create_date_formatted);
@@ -29,7 +28,6 @@ const PostFull = ({ postID, setDisplay, token, verification }) => {
 		axios
 			.get(`/posts/${postID}/comments`)
 			.then((response) => {
-				console.log(response);
 				setComments(response.data);
 			})
 			.catch((err) => console.log(err));
@@ -86,7 +84,7 @@ const PostFull = ({ postID, setDisplay, token, verification }) => {
 						{commentDisplay(comments)}
 					</div>
 					{token && verification ? (
-						<Commenter postID={postID} token={token} />
+						<Commenter postID={postID} token={token} getComments={getComments}/>
 					) : token ? (
 						<div className="center mrg-top">Please sign in in order to comment</div>
 					) : (

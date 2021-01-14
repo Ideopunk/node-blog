@@ -62,9 +62,10 @@ const App = () => {
 			.then((response) => {
 				console.log(response);
 				if (response.status === 404) {
-					console.log("code not found, resend code. ");
+					setMessage("We weren't able to send an email")
 				} else {
-					setVerification(response.data.status === "verified" ? true : false);
+					// setVerification(response.data.status === "verified" ? true : false);
+					setMessage("An email has been sent")
 				}
 			})
 			.catch((err) => console.log(err));

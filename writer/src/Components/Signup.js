@@ -87,7 +87,7 @@ const Signup = ({ setMenu }) => {
 					/>
 				</label>
 
-				<input type="submit" value="SIGN UP" className="mrg-top" />
+				<input type="submit" value="SIGN UP" className="mrg-top submit-button rad" />
 			</form>
 		</div>
 	);
