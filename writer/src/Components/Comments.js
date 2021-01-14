@@ -14,6 +14,7 @@ const Comments = ({ postID, token }) => {
 		};
 
 		const populate = () => {
+			setComments("")
 			axios
 				.get(`/posts/${postID}/comments`)
 				.then((response) => {

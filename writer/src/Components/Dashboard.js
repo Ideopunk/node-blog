@@ -128,7 +128,7 @@ const Dashboard = ({
 					{name && <div className="post-link">{name}'s posts</div>}
 
 					<a
-						href="localhost:8000"
+						href="reverent-franklin-b97805.netlify.app"
 						target="_blank"
 						rel="noreferrer"
 						className="post-link nodec"

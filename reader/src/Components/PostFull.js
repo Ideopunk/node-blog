@@ -13,7 +13,6 @@ const PostFull = ({ postID, setDisplay, token, verification }) => {
 	const [comments, setComments] = useState([]);
 
 	useEffect(() => {
-		console.log(postID);
 		axios
 			.get(`/posts/${postID}`)
 			.then((response) => {
@@ -46,13 +45,11 @@ const PostFull = ({ postID, setDisplay, token, verification }) => {
 
 	const handleCoverClick = (e) => {
 		if (e.target.getAttribute("name") === "cover") {
-			console.log("got em!");
 			setDisplay("");
 		}
 	};
 
 	const commentDisplay = (array) => {
-		console.log(array);
 		return array.map((comment) => (
 			<div
 				key={`${comment.user.name}${comment.create_date_formatted}`}

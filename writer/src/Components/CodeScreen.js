@@ -26,7 +26,6 @@ const CodeScreen = ({ token, setCodeScreen, setVerification }) => {
 	};
 
 	const handleClick = (e) => {
-		console.log(e.target);
 		if (e.target.getAttribute("name") === "cover") {
 			setCodeScreen(false);
 		}

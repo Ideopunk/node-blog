@@ -22,20 +22,16 @@ const MCE = ({
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
 
 	useEffect(() => {
-		console.log(updateID);
 		if (updateID) {
-			console.log('yup, we have updateid...')
 			axios
 				.get(`/posts/${updateID}/private`)
 				.then((response) => {
-					console.log(response);
 					setContent(response.data.text || "");
 					setTitle(response.data.title || "");
 					setPublish(response.data.published);
 				})
 				.catch((err) => console.log(err));
 		} else {
-			console.log("what!");
 			setContent(localStorage.getItem("content") || "");
 			setTitle(localStorage.getItem("title") || "");
 			setPublish(localStorage.getItem("published") || false);
@@ -43,7 +39,6 @@ const MCE = ({
 	}, [updateID]);
 
 	const handleEditorChange = (newContent, editor) => {
-		console.log("Content was updated:", newContent);
 		setContent(newContent);
 	};
 
@@ -57,12 +52,10 @@ const MCE = ({
 		e.preventDefault();
 		if (content) {
 			if (token) {
-				console.log(content);
 
 				if (verification) {
 					// updating
 					if (updateID) {
-						console.log("update");
 						axios
 							.put(`posts/${updateID}`, {
 								user: id,
@@ -71,7 +64,6 @@ const MCE = ({
 								published: publish,
 							})
 							.then((response) => {
-								console.log(response);
 								if (response.status === 200) {
 									setUpdateID("");
 									setTitle("");
@@ -93,7 +85,6 @@ const MCE = ({
 								published: publish,
 							})
 							.then((response) => {
-								console.log(response);
 								if (response.status === 200) {
 									if (publish) {
 										setMessage("Your post has been published!");

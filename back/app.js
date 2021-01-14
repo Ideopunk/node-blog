@@ -24,14 +24,21 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 
 // middleware
-var whitelist = ["http://reverent-northcutt-d65fb8.netlify.app/"];
-var corsOptions = {
+const whitelist = [
+	"https://reverent-northcutt-d65fb8.netlify.app",
+	"https://reverent-franklin-b97805.netlify.app",
+];
+
+const corsOptions = {
 	origin: function (origin, callback) {
-		if (whitelist.indexOf(origin) !== -1) {
-			callback(null, true);
-		} else {
-			callback(new Error("Not allowed by CORS"));
+		// bypass the requests with no origin (like curl requests, mobile apps, etc )
+		if (!origin) return callback(null, true);
+
+		if (whitelist.indexOf(origin) === -1) {
+			var msg = `This site ${origin} does not have an access. Only specific domains are allowed to access it.`;
+			return callback(new Error(msg), false);
 		}
+		return callback(null, true);
 	},
 };
 

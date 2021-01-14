@@ -31,6 +31,7 @@ const Commenter = ({ postID, token, getComments }) => {
 				onChange={handleChange}
 				placeholder="Share your thoughts"
 				className="mrg-bot textarea"
+				value={text}
 			/>
 			<input type="submit" value="Add comment" />
 		</form>

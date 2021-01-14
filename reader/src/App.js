@@ -7,7 +7,7 @@ import Verifier from "./Components/Verifier";
 import axios from "./Components/config/axios";
 
 const App = () => {
-	const [posts, setPosts] = useState("");
+	const [posts, setPosts] = useState([]);
 	const [display, setDisplay] = useState("");
 	const [token, setToken] = useState(localStorage.getItem("myToken"));
 	const [verification, setVerification] = useState(false);
@@ -54,10 +54,10 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<div className="post-container">{posts}</div>
+			{posts.length > 0 && <div className="post-container">{posts}</div>}
 
 			<aside className="sidebar">
-				<p className="center mrg-bot wide">Hi {name}!</p>
+				<p className="center mrg-bot wide">Hi{" " + name}!</p>
 
 				{token && !verification && (
 					<Verifier token={token} setVerification={setVerification} />
@@ -74,7 +74,12 @@ const App = () => {
 				)}
 
 				<button className="mrg-top mrg-bot">
-					<a href="localhost:3000" target="_blank" rel="noreferrer" className="nodec">
+					<a
+						href="https://reverent-northcutt-d65fb8.netlify.app/"
+						target="_blank"
+						rel="noreferrer"
+						className="nodec"
+					>
 						Writer
 					</a>
 				</button>
