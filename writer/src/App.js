@@ -62,9 +62,9 @@ const App = () => {
 			.then((response) => {
 				console.log(response);
 				if (response.data === "failure") {
-					setMessage("We weren't able to send an email")
+					setMessage("We weren't able to send an email");
 				} else {
-					setMessage("An email has been sent")
+					setMessage("An email has been sent");
 				}
 			})
 			.catch((err) => console.log(err));
@@ -79,12 +79,13 @@ const App = () => {
 	const handleClick = (e) => {
 		const targ = e.target;
 
+		const arr = ["dashboard", "cover"];
 		if (
-			targ.getAttribute("name") !== "dashboard" &&
-			targ.parentNode.getAttribute("name") !== "dashboard" &&
-			targ.parentNode.parentNode.getAttribute("name") !== "dashboard" &&
-			targ.parentNode.parentNode.parentNode.getAttribute("name") !== "dashboard" &&
-			targ.parentNode.parentNode.parentNode.parentNode.getAttribute("name") !== "dashboard"
+			!arr.includes(targ.getAttribute("name")) &&
+			!arr.includes(targ.parentNode.getAttribute("name")) &&
+			!arr.includes(targ.parentNode.parentNode.getAttribute("name")) &&
+			!arr.includes(targ.parentNode.parentNode.parentNode.getAttribute("name")) &&
+			!arr.includes(targ.parentNode.parentNode.parentNode.parentNode.getAttribute("name"))
 		) {
 			setDisplay(false);
 		}
