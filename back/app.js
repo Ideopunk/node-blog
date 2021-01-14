@@ -24,16 +24,16 @@ const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 
 // middleware
-var whitelist = ['http://example1.com', 'http://example2.com']
+var whitelist = ["http://reverent-northcutt-d65fb8.netlify.app/"];
 var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
+	origin: function (origin, callback) {
+		if (whitelist.indexOf(origin) !== -1) {
+			callback(null, true);
+		} else {
+			callback(new Error("Not allowed by CORS"));
+		}
+	},
+};
 
 app.use(cors(corsOptions));
 app.use(logger("dev"));
