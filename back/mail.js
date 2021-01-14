@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-const mail = (receiver, secret, id) => {
+const mail = (receiver, secret, callback) => {
 	// now send an email to verify
 	let transporter = nodemailer.createTransport({
 		host: "smtp.mail.com",
@@ -23,14 +23,13 @@ const mail = (receiver, secret, id) => {
 
 	transporter.sendMail(message, (err, info) => {
 		if (err) {
-			console.log("err");
 			console.log(err);
-			return err;
+			callback(err);
 		} else {
 			console.log("info.response");
 			console.log(info);
 			console.log(info.response);
-			return info.response;
+			callback(info.response);
 		}
 	});
 };

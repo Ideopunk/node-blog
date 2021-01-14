@@ -15,6 +15,7 @@ const Dashboard = ({
 	token,
 	setToken,
 	verification,
+	setVerification,
 	verifyEmail,
 	signOut,
 	name,
@@ -159,7 +160,13 @@ const Dashboard = ({
 							</div>
 						</>
 					)}
-					{codeScreen && <CodeScreen token={token} setCodeScreen={setCodeScreen} />}
+					{codeScreen && (
+						<CodeScreen
+							token={token}
+							setCodeScreen={setCodeScreen}
+							setVerification={setVerification}
+						/>
+					)}
 					{menu === "signup" ? (
 						<Signup setMenu={setMenu} />
 					) : menu === "login" ? (

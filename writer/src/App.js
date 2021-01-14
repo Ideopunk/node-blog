@@ -61,10 +61,9 @@ const App = () => {
 			.post(`/auth`)
 			.then((response) => {
 				console.log(response);
-				if (response.status === 404) {
+				if (response.data === "failure") {
 					setMessage("We weren't able to send an email")
 				} else {
-					// setVerification(response.data.status === "verified" ? true : false);
 					setMessage("An email has been sent")
 				}
 			})
@@ -99,6 +98,7 @@ const App = () => {
 				posts={posts}
 				setUpdateID={setUpdateID}
 				verification={verification}
+				setVerification={setVerification}
 				verifyEmail={verifyEmail}
 				signOut={signOut}
 				name={name}

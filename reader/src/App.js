@@ -47,19 +47,6 @@ const App = () => {
 		});
 	}, []);
 
-	const verifyEmail = () => {
-		axios
-			.post(`/auth`)
-			.then((response) => {
-				if (response.status === 404) {
-					console.log("code not found, resend code. ");
-				} else {
-					setVerification(response.data.status === "verified" ? true : false);
-				}
-			})
-			.catch((err) => console.log(err));
-	};
-
 	const signOut = () => {
 		localStorage.setItem("myToken", "");
 		setToken("");
@@ -98,7 +85,6 @@ const App = () => {
 					postID={display}
 					setDisplay={setDisplay}
 					verification={verification}
-					verifyEmail={verifyEmail}
 					token={token}
 				/>
 			)}

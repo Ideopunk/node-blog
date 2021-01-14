@@ -24,15 +24,25 @@ router.post("/", passport.authenticate("jwt", { session: false }), (req, res) =>
 					return next(err);
 				}
 
-				const response = mail(req.user.username, secret, doc._id);
-				console.log("rejected: " + response.rejected);
-				res.json(response);
+				mail(req.user.username, secret, (response) => {
+					console.log(response);
+					if (response.rejected.length < 1) {
+						res.json("success");
+					} else {
+						res.json("failure");
+					}
+				});
 			});
 		} else {
-			const response = mail(req.user.username, code.code, code._id);
-			console.log("rejected: " + response.rejected);
+			mail(req.user.username, code.code, (response) => {
+				console.log(response);
 
-			res.json(response);
+				if (response.rejected.length < 1) {
+					res.json("success");
+				} else {
+					res.json("failure");
+				}
+			});
 		}
 	});
 });

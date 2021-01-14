@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "./config/axios";
 
-const CodeScreen = ({ token, setCodeScreen }) => {
+const CodeScreen = ({ token, setCodeScreen, setVerification }) => {
 	const [secret, setSecret] = useState("");
 
 	axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
@@ -16,7 +16,12 @@ const CodeScreen = ({ token, setCodeScreen }) => {
 			.post(`/auth/secret`, {
 				secret: secret,
 			})
-			.then((response) => console.log(response))
+			.then((response) => {
+				if (response.data === "success") {
+					setVerification(true)
+					setCodeScreen(false)
+				}
+			})
 			.catch((err) => console.error(err));
 	};
 
