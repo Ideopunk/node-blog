@@ -1,0 +1,4 @@
+[build]
+base = "writer"
+publish = "writer/build"
+command = "npm run build"
