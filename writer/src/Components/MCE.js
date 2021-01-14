@@ -48,6 +48,7 @@ const MCE = ({
 
 	const removeDash = () => setDisplay(false);
 
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (content) {

@@ -8,7 +8,7 @@ const Comment = require("../models/Comment");
 
 // GET all comments for post
 router.get("/", function (req, res) {
-	Comment.find({ post: req.params.postId })
+	Comment.find({ post: req.params.postID })
 		.populate("user", "name")
 		.exec((err, list_comments) => {
 			if (err) {
@@ -44,7 +44,7 @@ router.post("/", passport.authenticate("jwt", { session: false }), [
 
 		if (req.user.status === "verified") {
 			const comment = new Comment({
-				post: req.params.postId,
+				post: req.params.postID,
 				text: req.body.text,
 				user: req.user._id,
 			});
